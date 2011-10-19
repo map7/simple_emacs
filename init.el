@@ -15,6 +15,7 @@
 
 ; directory to put various el files into
 (add-to-list 'load-path "~/.emacs.d/includes")
+(add-to-list 'load-path "~/.emacs.d/includes/emacs-rails")
 (add-to-list 'load-path "~/.emacs.d/includes/yaml-mode")
 (add-to-list 'load-path "~/.emacs.d/includes/ruby-mode")
 (add-to-list 'load-path "~/.emacs.d/includes/yasnippet")
@@ -114,8 +115,6 @@
 ; -------------------- Rails minor plugin -------------------- 
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
-(add-to-list 'load-path
-             "~/.emacs.d/emacs-rails")
 (require 'rails)
 
 
