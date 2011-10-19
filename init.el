@@ -46,6 +46,7 @@
 (setq column-number-mode t)
 (display-time)
 (setq backup-inhibited t) ;; disable backup
+(setq save-abbrevs t)
 
 ;; Org-mode options
 (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
