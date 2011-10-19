@@ -8,7 +8,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
+      (list 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -17,8 +17,6 @@
 ; directory to put various el files into
 (add-to-list 'load-path "~/.emacs.d/includes")
 (add-to-list 'load-path "~/.emacs.d/includes/emacs-rails")
-(add-to-list 'load-path "~/.emacs.d/includes/egg") ; new git plugin
-(add-to-list 'load-path "~/.emacs.d/includes/feature-mode")
 
 ; Keybinding
 (global-set-key [f5] 'egg-status)
@@ -93,6 +91,8 @@
 ; -------------------- Rails minor plugin -------------------- 
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
+;; https://github.com/remvee/emacs-rails
 (require 'rails)			
 
 ;; Rinari
@@ -133,10 +133,8 @@
   (find-file newfilename))
 
 ; -------------------- Rails Testing -------------------- 
-
-; Cucumber
+;; Cucumber
 (require 'feature-mode)
-(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
 
 ; -------------------- Rails Tools -------------------- 
 ; Check out abbrev-mode instead as it seems lighter.
