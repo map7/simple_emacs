@@ -138,13 +138,7 @@
 
 ; -------------------- Rails Tools -------------------- 
 ; Check out abbrev-mode instead as it seems lighter.
-; yasnippet
-;; (require 'yasnippet-bundle)
-;; (yas/initialize)
-;; (yas/load-directory "~/.emacs.d/includes/yasnippet/snippets/")
-
 (require 'snippet)
-
 
 ; -------------------- Ruby plugins -------------------- 
 ;; ; Taken from the comment section in inf-ruby.el
