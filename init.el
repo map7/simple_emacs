@@ -8,7 +8,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'haml-mode 'magit-simple-keys))
+      (list 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -94,8 +94,15 @@
 ; -------------------- Rails minor plugin -------------------- 
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
-;;(require 'rails)			
+(require 'rails)			
 
+;; Rinari
+(add-to-list 'load-path "~/.emacs.d/rinari/")
+(require 'rinari)
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (defadvice ruby-mode-set-encoding
+              (around ruby-mode-set-encoding-disable activate) nil)))
 
 
 ; -------------------- Rails Views -------------------- 
@@ -127,8 +134,6 @@
   (find-file newfilename))
 
 ; -------------------- Rails Testing -------------------- 
-; rcov
-(require 'rcov)
 
 ; Cucumber
 (require 'feature-mode)
@@ -142,6 +147,7 @@
 (yas/load-directory "~/.emacs.d/includes/yasnippet/snippets/")
 
 (require 'snippet)
+
 
 ; -------------------- Ruby plugins -------------------- 
 ;; ; Taken from the comment section in inf-ruby.el
@@ -175,11 +181,6 @@
 (autoload 'inf-ruby-keys "inf-ruby" "" t)
 (eval-after-load 'ruby-mode
 '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
-
-;; ; Ruby-block
-;; (require 'ruby-block)
-;; (ruby-block-mode t)
-
 
 ; -------------------- SQL --------------------
 (defun my-sql-interactive-mode-hook ()
