@@ -3,11 +3,12 @@
 ; Desc:   Emacs v24 config file made for development (mostly Ruby on Rails)
 
 (require 'package)
+(add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'yaml-mode 'haml-mode 'magit-simple-keys))
+      (list 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -16,7 +17,6 @@
 ; directory to put various el files into
 (add-to-list 'load-path "~/.emacs.d/includes")
 (add-to-list 'load-path "~/.emacs.d/includes/emacs-rails")
-(add-to-list 'load-path "~/.emacs.d/includes/ruby-mode")
 (add-to-list 'load-path "~/.emacs.d/includes/yasnippet")
 (add-to-list 'load-path "~/.emacs.d/includes/egg") ; new git plugin
 (add-to-list 'load-path "~/.emacs.d/includes/feature-mode")
@@ -94,7 +94,8 @@
 ; -------------------- Rails minor plugin -------------------- 
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
-(require 'rails)
+;;(require 'rails)			
+
 
 
 ; -------------------- Rails Views -------------------- 
@@ -143,23 +144,24 @@
 (require 'snippet)
 
 ; -------------------- Ruby plugins -------------------- 
-; Taken from the comment section in inf-ruby.el
-(autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files")
-(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.rhtml$" . html-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
-(autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
-(autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
-(add-hook 'ruby-mode-hook '(lambda () (inf-ruby-keys)))
+;; ; Taken from the comment section in inf-ruby.el
+;; (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files")
+;; (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+;; (add-to-list 'auto-mode-alist '("\\.rhtml$" . html-mode))
+;; (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+;; (autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
+;; (autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
+;; (add-hook 'ruby-mode-hook '(lambda () (inf-ruby-keys)))
 
-; Ruby electric
+;; Ruby-electric
+(require 'ruby-electric)
 (add-hook 'ruby-mode-hook
           (lambda()
             (add-hook 'local-write-file-hooks
                       '(lambda()
                          (save-excursion
                            (untabify (point-min) (point-max))
-;                           (delete-trailing-whitespace)
+                           ;(delete-trailing-whitespace)
                            )))
             (set (make-local-variable 'indent-tabs-mode) 'nil)
             (set (make-local-variable 'tab-width) 2)
@@ -168,19 +170,15 @@
             (ruby-electric-mode t)
             ))
 
-; Inferior Ruby Mode
-(autoload 'run-ruby "inf-ruby"
-  "Run an inferior Ruby process")
-(autoload 'inf-ruby-keys "inf-ruby"
-  "Set local key defs for inf-ruby in ruby-mode")
-(add-hook 'ruby-mode-hook
-          '(lambda ()
-             (inf-ruby-keys)
-	     ))
+;; Inferior Ruby Mode
+(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
+(autoload 'inf-ruby-keys "inf-ruby" "" t)
+(eval-after-load 'ruby-mode
+'(add-hook 'ruby-mode-hook 'inf-ruby-keys))
 
-; Ruby-block
-(require 'ruby-block)
-(ruby-block-mode t)
+;; ; Ruby-block
+;; (require 'ruby-block)
+;; (ruby-block-mode t)
 
 
 ; -------------------- SQL --------------------
