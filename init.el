@@ -7,7 +7,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'magit-simple-keys))
+      (list 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
