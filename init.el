@@ -7,7 +7,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'haml-mode 'magit-simple-keys))
+      (list 'yaml-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -29,20 +29,40 @@
 (global-set-key [f8] 'next-multiframe-window)
 (global-set-key [f12] 'switch-full-screen)
 
-; To display a URL by shift-clicking on it, put this in your ~/.emacs
-; file:
+;fullscreen mode
+(defun switch-full-screen ()
+  (interactive)
+  (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen"))
+
+;; Allow using mouse thumb button to browse URLs
 (global-set-key [mouse-10] 'browse-url-at-mouse)
 
 ; stop emacs from contaminating each directory with semantic.cache
 (setq semanticdb-default-save-directory "/tmp")
 
 ; General settings
+(menu-bar-mode 1)         ;; enable the menu bar
 (tool-bar-mode -1)        ; Disable tool-bar
 (display-battery-mode)
 (setq column-number-mode t)
 (display-time)
-;(load-theme 'wheatgrass)  ; color themes
-(setq backup-inhibited t) ; disable backup
+(setq backup-inhibited t) ;; disable backup
+
+;; Org-mode options
+(add-hook 'org-mode-hook 'turn-on-visual-line-mode)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(setq org-agenda-files '("~/Dropbox/org/"))
+(setq org-directory "~/Dropbox/org")
+(setq org-mobile-inbox-for-pull "~/Dropbox/org/inbox.org");; new notes will be stored here 
+(setq org-mobile-directory "~/Dropbox/MobileOrg")         ;; Set to <your Dropbox root directory>/MobileOrg.
+
+;; Set color
+(custom-set-faces
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
+
+
 
 ; Auto complete settings
 (setq hippie-expand-try-functions-list
@@ -50,59 +70,18 @@
     try-complete-file-name
     try-expand-dabbrev))
 
-;fullscreen mode
-(defun switch-full-screen ()
-  (interactive)
-  (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen"))
-
-; git egg
-;(require 'egg)				
-
-; Collection of Emacs Dev Environment
-;(require 'cedet) 
-
-; Org-mode settings
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-font-lock-mode 1)
-
-;; Set to the location of your Org files on your local system
-(setq org-directory "~/Dropbox/org")
-;; Set to the name of the file where new notes will be stored
-(setq org-mobile-inbox-for-pull "~/Dropbox/org/inbox.org")
-;; Set to <your Dropbox root directory>/MobileOrg.
-(setq org-mobile-directory "~/Dropbox/MobileOrg")
-
-; Setup word wrap visual line mode
-(add-hook 'org-mode-hook 'turn-on-visual-line-mode)
 
 ; -------------------- Custom Settings --------------------
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(display-battery-mode t)
- '(display-time-mode t)
  '(ecb-options-version "2.32")
  '(inhibit-startup-screen t)
  '(org-agenda-files (quote ("~/Dropbox/org")))
  '(rails-ws:default-server-type "mongrel")
- '(tool-bar-mode nil)
  '(tooltip-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
 
 ; -------------------- File plugins --------------------
 ; Intelligent file opener
-(require 'ido)
 (ido-mode t)
 
 ; tramp - remote ssh editin
