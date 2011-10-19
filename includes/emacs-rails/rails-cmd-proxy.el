@@ -65,6 +65,28 @@ otherwise if set REVERSE convert from remote to local."
 
 ;; remote wrappers
 
+(defun rails-cmd-proxy:start-process-color (name buffer command command-args)
+  ""
+  (rails-project:with-root
+   (root)
+   (let ((proxy-struct (rails-cmd-proxy:lookup root))
+         (command command)
+         (command-args command-args))
+     (when proxy-struct
+       (setq command-args
+             (rails-cmd-proxy:construct-remote-cmd proxy-struct
+                                                   root
+                                                   command
+                                                   command-args))
+       (setq command rails-cmd-proxy:remote-cmd))
+     (let ((process (start-process-shell-command name
+                                                 buffer
+                                                 command
+                                                 command-args)))
+       (set-process-filter process
+                           'ansi-color-insertion-filter)
+       process)))) 
+
 (defun rails-cmd-proxy:start-process (name buffer command command-args)
   ""
   (rails-project:with-root
@@ -79,6 +101,13 @@ otherwise if set REVERSE convert from remote to local."
                                                    command
                                                    command-args))
        (setq command rails-cmd-proxy:remote-cmd))
+     (save-excursion
+       (set-buffer (get-buffer-create buffer))
+       (set (make-local-variable 'comint-scroll-to-bottom-on-output) t)
+       (set (make-local-variable 'compilation-error-regexp-alist)
+	    rails-error-regexp-alist)
+       (compilation-shell-minor-mode t)
+       (rails-minor-mode t))
      (start-process-shell-command name
                                   buffer
                                   command
@@ -116,5 +145,17 @@ otherwise if set REVERSE convert from remote to local."
          (replace-match (format "%s "
                                 (string-repeat " " (- (length (match-string 1)) 1)))
                         nil t nil 1))))))
+
+(defun ansi-color-insertion-filter (proc string)
+  (with-current-buffer (process-buffer proc)
+    (let ((buffer-read-only nil)
+          (moving (= (point) (process-mark proc))))
+      (save-excursion
+        ;; Insert the text, advancing the process marker.
+        (goto-char (process-mark proc))
+        ;; decode ansi color sequences
+        (insert (ansi-color-apply string))
+        (set-marker (process-mark proc) (point)))
+      (if moving (goto-char (process-mark proc))))))
 
 (provide 'rails-cmd-proxy)

@@ -26,7 +26,20 @@
 
 ;;; Code:
 
+
+(defcustom rails-test:quiet 't
+  "Do not show test progress in minibuffer."
+  :group 'rails
+  :type 'boolean
+  :tag "Rails Quiet Tests")
+
+(defcustom rails-test:rake-test-all-task-name "test"
+  "Rake task name to run all tests."
+  :group 'rails
+  :type 'string)
+
 (defvar rails-test:history nil)
+
 
 (defconst rails-test:result-regexp
   "\\([0-9]+ tests, [0-9]+ assertions, \\([0-9]+\\) failures, \\([0-9]+\\) errors\\)")
@@ -51,7 +64,7 @@
 (defun rails-test:line-regexp (&optional append prepend)
   (concat
    append
-    "\\[?\\([^ \f\n\r\t\v]+?\\):\\([0-9]+\\)\\(?::in\s*`\\(.*?\\)'\\)?"
+   "\\[?/?\\(\\(?:app\\|config\\|lib\\|test\\|spec\\|vendor\\)?/[^ \f\n\r\t\v]+?\\):\\([0-9]+\\)\\(?::in\s*`\\(.*?\\)'\\)?\\]?"
    prepend))
 
 (defun rails-test:error-regexp-alist ()
@@ -59,40 +72,53 @@
    (list 'rails-test-trace
          (rails-test:line-regexp) 1 2 nil 1)
    (list 'rails-test-error
-         (rails-test:line-regexp nil "\\(?:\]:\\|\n$\\)") 1 2 nil 2))) ; ending of "]:" or next line is blank
+         (rails-test:line-regexp nil "\\(?:\\]:\\|\n$\\)") 1 2 nil 2))) ; ending of "]:" or next line is blank
 
-(defun rails-test:print-result ()
-  "Determine if the output buffer needs to be shown"
-  (with-current-buffer (get-buffer rails-script:buffer-name)
-    (let ((msg (list))
-          (failures 0)
-          (errors 0))
+(defun rails-test:count-errors-failures ()
+  "Return the sum of errors and failures for a completed run."
+  (let ((failures 0)
+        (errors 0))
+    (with-current-buffer (get-buffer rails-script:buffer-name)
       (save-excursion
         (goto-char (point-min))
         (while (re-search-forward rails-test:result-regexp (point-max) t)
           (setq failures (+ failures (string-to-number (match-string 2))))
-          (setq errors (+ errors (string-to-number (match-string 3))))
-          (add-to-list 'msg (match-string-no-properties 1))))
-      (unless (zerop (length msg))
-        (message (strings-join " || " (reverse msg))))
-      (when (and (or (not (zerop rails-script:output-mode-ret-value))
-                     (not (zerop errors))
-                     (not (zerop failures)))
-                 (not (buffer-visible-p (current-buffer))))
-        (rails-script:popup-buffer)))))
+          (setq errors (+ errors (string-to-number (match-string 3)))))))
+    (+ errors
+       failures)))
+
+(defun rails-test:print-summaries ()
+  "Print summary lines."
+  (let ((msg nil))
+    (with-current-buffer (get-buffer rails-script:buffer-name)
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward rails-test:result-regexp (point-max) t)
+          (setq msg (cons (match-string-no-properties 1) msg)))))
+    (when msg
+      (message "%s" (strings-join " || " (reverse msg))))))
 
 (defun rails-test:print-progress (start end len)
   (let (content)
     (save-excursion
       (goto-char (point-min))
       (while (re-search-forward "^Started" end t)
-        (line-move 1)
-        (save-match-data
-          (let ((progress (string=~ rails-test:progress-regexp
-                                    (current-line-string) $m)))
-            (when progress
-              (setq content (concat content progress)))))))
-    (when content
+	(line-move 1)
+	(save-match-data
+	  (let ((progress (string=~ rails-test:progress-regexp
+				    (current-line-string) $m)))
+	    (when progress
+	      (setq content (concat content progress))
+	      (setq rails-ui:num-errors 0
+		    rails-ui:num-failures 0
+		    rails-ui:num-ok 0)
+	      (dolist (c (string-to-list content))
+		(case c
+		  (?\E (setq rails-ui:num-errors (+ 1 rails-ui:num-errors)))
+		  (?\F (setq rails-ui:num-failures (+ 1 rails-ui:num-failures)))
+		  (?\. (setq rails-ui:num-ok (+ 1 rails-ui:num-ok))))))))))
+    (when (and content
+	       (not rails-test:quiet))
       (message "Progress of %s: %s" rails-script:running-script-name content))))
 
 (define-derived-mode rails-test:compilation-mode compilation-mode "RTest"
@@ -100,31 +126,44 @@
   (rails-script:setup-output-buffer)
   ; replace compilation font-lock-keywords
   (set (make-local-variable 'compilation-mode-font-lock-keywords) rails-test:font-lock-keywords)
-  ; skip anythins less that error
-  (set (make-local-variable 'compilation-skip-threshold) 2)
   (set (make-local-variable 'compilation-error-regexp-alist-alist)
        (rails-test:error-regexp-alist))
   (set (make-local-variable 'compilation-error-regexp-alist)
        '(rails-test-error
          rails-test-trace))
   (add-hook 'after-change-functions 'rails-test:print-progress nil t)
-  (add-hook 'rails-script:run-after-stop-hook 'rails-test:hide-rails-project-root t t)
-;;  (add-hook 'rails-script:run-after-stop-hook 'rails-test:scroll-of-buffer t t)
-  (add-hook 'rails-script:run-after-stop-hook 'rails-test:print-result t t)
+  (add-hook 'rails-script:after-hook-internal 'rails-test:run-after-hooks t t)
   (add-hook 'rails-script:show-buffer-hook 'rails-test:reset-point-and-height t t))
 
-;; (defun rails-test:scroll-of-buffer ()
-;;   (with-current-buffer "ROutput"
-;;     (buffer "ROutput")
-;;     (goto-char (point-min))
-;;     (scroll-down-nomark (count-lines (point-min) (point-max)))))
+(defcustom rails-test:run-after-hook '(rails-test:hide-rails-project-root
+                                       rails-test:print-summaries)
+  "Hooks ran after tests have run."
+  :group 'rails
+  :type 'hook)
+
+(defcustom rails-test:run-after-fail-hook '(rails-script:popup-buffer)
+  "Hooks ran after tests have run and any have failured or an error occured."
+  :group 'rails
+  :type 'hook)
+
+(defcustom rails-test:run-after-pass-hook nil
+  "Hooks ran after tests have run and any all passed."
+  :group 'rails
+  :type 'hook)
+
+(defun rails-test:run-after-hooks ()
+  (run-hooks 'rails-test:run-after-hook)
+  (if (or (not (zerop rails-script:output-mode-ret-value))
+          (> (rails-test:count-errors-failures) 0))
+    (run-hooks 'rails-test:run-after-fail-hook)
+    (run-hooks 'rails-test:run-after-pass-hook)))
 
 (defun rails-test:hide-rails-project-root ()
   "Show files that are relative to the project root as relative filenames
 As the buffer is read-only this is merely a change in appearance"
   (rails-project:with-root (root)
     (save-excursion
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (let ((file-regex (concat (regexp-quote root) "[^:]+")))
         (while (re-search-forward file-regex nil t)
           (let* ((orig-filename (match-string 0))
@@ -155,32 +194,49 @@ Used when it's determined that the output buffer needs to be shown."
   (interactive (rails-completing-read "What test run"
                                       (rails-test:list-of-tasks)
                                       'rails-test:history t))
+  (rails-ui:reset-error-count)
   (unless task
     (setq task "all")
     (add-to-list rails-test:history task))
   (let ((task-name
          (if (string= "all" task)
-             "test"
+             rails-test:rake-test-all-task-name
            (concat "test:" task))))
-    (rails-rake:task task-name 'rails-test:compilation-mode)))
+    (rails-rake:task task-name 'rails-test:compilation-mode (concat "test " task))))
+
+(defvar rails-test:previous-run-single-param nil
+  "Hold params of previous run-single-file call.")
 
 (defun rails-test:run-single-file (file &optional param)
   "Run test for single file FILE."
   (when (not (or file param))
     "Refuse to run ruby without an argument: it would never return")
+  (rails-ui:reset-error-count)
   (let ((param (if param
                    (list file param)
-                 (list file))))
-    (rails-script:run "ruby" param 'rails-test:compilation-mode)))
+                 (list file)))
+	(test-name file))
+    (if (string-match "\\([^/\\\\.]+\\)_test\.rb$" test-name)
+	(setq test-name (concat "test " (match-string-no-properties 1 test-name))))
+    (rails-script:run "ruby" (append (list "-Itest") param) 'rails-test:compilation-mode test-name)
+    (setq rails-test:previous-run-single-param param)))
+
+(defun rails-test:rerun-single ()
+  "Rerun previous single file test."
+  (interactive)
+  (if rails-test:previous-run-single-param
+    (apply 'rails-test:run-single-file rails-test:previous-run-single-param)
+    (message "No previous single file test recorded.")))
 
 (defun rails-test:run-current ()
   "Run a test for the current controller/model/mailer."
   (interactive)
   (let* ((model (rails-core:current-model))
          (controller (rails-core:current-controller))
+         (mailer (rails-core:current-mailer))
          (func-test (rails-core:functional-test-file controller))
          (unit-test (rails-core:unit-test-file model))
-         (mailer-test (rails-core:unit-test-file controller)))
+         (mailer-test (rails-core:unit-test-file mailer)))
     (rails-test:run-single-file
      (cond
       ;; model
@@ -189,20 +245,33 @@ Used when it's determined that the output buffer needs to be shown."
       ((and controller (not (rails-core:mailer-p controller)) func-test)
        func-test)
       ;; mailer
-      ((and controller (rails-core:mailer-p controller) unit-test)
-       unit-test)
+      ((and mailer mailer-test) mailer-test)
       ;; otherwise...
       (t (if (string-match "test.*\\.rb" (buffer-file-name))
              (buffer-file-name)
-           (error "Cannot determine whiche test file to run.")))))))
+           (error "Cannot determine which test file to run.")))))))
+
+(defun rails-test:active-support-test-case-current-test ()
+  (save-excursion
+    (ruby-end-of-block)
+    (and (search-backward-regexp "^[ \t]+test[ \t]+\\([\'\"]\\)\\(.*?\\)\\1[ \t]+do" nil t)
+         (match-string-no-properties 2))))
 
 (defun rails-test:run-current-method ()
   "Run a test for the current method."
   (interactive)
   (let ((file (substring (buffer-file-name) (length (rails-project:root))))
-        (method (rails-core:current-method-name)))
-    (when method
-      (rails-test:run-single-file file (format "--name=%s" method)))))
+        (method (rails-core:current-method-name))
+        (description (or (rails-shoulda:current-test) (rails-test:active-support-test-case-current-test))))
+    (cond (description
+           (rails-test:run-single-file file
+                                       (format "--name=/%s/"
+                                               (replace-regexp-in-string "^\\.\\|\\.$" ""
+                                                                         (replace-regexp-in-string "[^a-z0-9,-]+" "."
+                                                                                                   description)))))
+          (method
+           (rails-test:run-single-file file
+                                       (format "--name=%s" method))))))
 
 ;; These functions were originally defined anonymously in ui. They are defined here so keys
 ;; can be added to them dryly

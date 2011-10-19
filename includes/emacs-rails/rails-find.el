@@ -55,6 +55,7 @@
 (rails-find:gen "spec" "spec/")
 (rails-find:gen "spec-controllers" "spec/controllers/")
 (rails-find:gen "spec-models" "spec/models/")
+(rails-find:gen "spec-helpers" "spec/views/")
 (rails-find:gen "spec-helpers" "spec/helpers/")
 (rails-find:gen "spec-fixtures" "spec/fixtures/")
 

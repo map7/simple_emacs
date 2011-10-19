@@ -7,8 +7,8 @@
 ;;          Howard Yeh <hayeah at gmail dot com>
 
 ;; Keywords: ruby rails languages oop
-;; $URL: svn://rubyforge.org/var/svn/emacs-rails/trunk/rails-lib.el $
-;; $Id: rails-lib.el 232 2008-08-01 22:42:31Z dimaexe $
+;; $URL$
+;; $Id$
 
 ;;; License
 
@@ -109,7 +109,7 @@ If EXPR is not nil exeutes BODY.
      (replace-regexp-in-string
       "\\([A-Z]+\\)\\([A-Z][a-z]\\)" "\\1_\\2"
       (replace-regexp-in-string
-       "\\([a-z\\d]\\)\\([A-Z]\\)" "\\1_\\2"
+       "\\([a-z0-9]\\)\\([A-Z]\\)" "\\1_\\2"
        string)))))
 
 (defun string-not-empty (str) ;(+)
@@ -208,7 +208,7 @@ ABBREV-TABLE."
 not exist."
   `(progn
      (unless (boundp ',key-map)
-       (setf ,key-map (make-keymap)))
+       (setf ,key-map (make-sparse-keymap)))
      ,@(mapcar
   #'(lambda (key-func)
       `(define-key ,key-map ,(first key-func) ,(second key-func)))
@@ -346,6 +346,21 @@ as the value of the symbol, and the hook as the function definition."
          history ; hist
          (car history-value))))) ;def
 
+;; railsy-replace
+(defun camelized-p (string)
+  "Return nil unless string is in camelized format (first character is capital, there is at least on lower capital and all characters are letters of numbers"
+  (let ((case-fold-search nil))
+      (string-match "^[A-Z][A-Za-z0-9]*[a-z]+[A-Za-z0-9]*$" string)))
+
+(defun underscored-p (string)
+  "Return nil unless string is in underscored format (containing only lower case characters, numbers or underscores)"
+  (let ((case-fold-search nil))
+    (string-match "^[a-z][a-z0-9_]*$" string)))
+
+(defun replace-rails-variable ()
+  (interactive)
+)
+
 ;; MMM
 
 ;; (defvar mmm-indent-sandbox-finish-position nil)
@@ -377,7 +392,7 @@ as the value of the symbol, and the hook as the function definition."
 ;;       (setq mmm-indent-sandbox-finish-position nil)
 ;;       (save-excursion
 ;;         (set-buffer fragment-name)
-;;         (beginning-of-buffer)
+;;         (goto-char (point-min))
 ;;         (insert content)
 ;;         (goto-char fragment-pos)
 ;;         (funcall indent-func t)

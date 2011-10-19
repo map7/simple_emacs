@@ -26,21 +26,23 @@
 
 ;;; Code:
 
-(defvar rails-features:list
+(defcustom rails-features-enabled
   '(rails-snippets-feature
-    rails-speedbar-feature
-    rails-rspec-feature)
-  "List of features")
+    rails-speedbar-feature)
+  "List of enabled features.  NOTE: restart emacs to make changes take effect."
+  :group 'rails
+  :type '(repeat symbol))
 
 (defvar rails-features:installed-p nil)
 
 (defun rails-features:install ()
   (unless rails-features:installed-p
-    (dolist (feature rails-features:list)
-      (when (require feature nil t)
+    (dolist (feature rails-features-enabled)
+      (if (require feature nil t)
         (apply
          (intern (concat (symbol-name feature) ":install"))
-         (list))))
+         (list))
+        (message "unable to load feature `%s'" feature)))
     (setq rails-features:installed-p t)))
 
 (provide 'rails-features)

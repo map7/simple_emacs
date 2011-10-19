@@ -6,8 +6,8 @@
 ;;          Rezikov Peter <crazypit13 (at) gmail.com>
 
 ;; Keywords: ruby rails languages oop
-;; $URL: svn://rubyforge.org/var/svn/emacs-rails/trunk/rails-ui.el $
-;; $Id: rails-ui.el 232 2008-08-01 22:42:31Z dimaexe $
+;; $URL$
+;; $Id$
 
 ;;; License
 
@@ -80,18 +80,24 @@
       ([goto-unit-tests]  '("Go to Unit Tests"       . rails-nav:goto-unit-tests))
       ([goto-func-tests]  '("Go to Functional Tests" . rails-nav:goto-functional-tests))
       ([goto-models]      '("Go to Models"           . rails-nav:goto-models))
-      ([goto-controllers] '("Go to Controllers"      . rails-nav:goto-controllers)))
+      ([goto-controllers] '("Go to Controllers"      . rails-nav:goto-controllers))
+      ([goto-rspec-controllers] '("Go to RSpec Controllers" . rails-nav:goto-rspec-controllers))
+      ([goto-rspec-lib]         '("Go to RSpec Lib"         . rails-nav:goto-rspec-lib))
+      ([goto-rspec-models]      '("Go to RSpec Models"      . rails-nav:goto-rspec-models))
+      ([goto-rspec-fixtures]    '("Go to RSpec Fixtures"    . rails-nav:goto-rspec-fixtures)))
     map))
 
 (defconst rails-minor-mode-tests-menu-bar-map
   (let ((map (make-sparse-keymap)))
     (define-keys map
+      ([kill-current] '(menu-item "Kill Test" rails-script:kill-script :enable (rails-script:running-p)))
+      ([separator0]   '("--"))
       ([integration] '("Integration Tests" . rails-test:run-integration))
       ([unit]        '("Unit Tests"        . rails-test:run-units))
       ([functional]  '("Functional Tests"  . rails-test:run-functionals))
       ([recent]      '("Recent Tests"      . rails-test:run-recent))
       ([tests]       '("All"               . rails-test:run-all))
-      ([separator]   '("--"))
+      ([separator1]   '("--"))
       ([toggle]      '(menu-item "Toggle Output Window" rails-script:toggle-output-window
                                  :enable (get-buffer rails-script:buffer-name)))
       ([run-current] '("Test Current Model/Controller/Mailer" . rails-test:run-current))
@@ -116,7 +122,7 @@
 
   ([rails rails-customize] '("Customize" . (lambda () (interactive) (customize-group 'rails))))
   ([rails separator0] '("--"))
-  ([rails svn-status]        '("SVN Status"             . rails-svn-status-into-root))
+  ([rails scm-status]        '("SCM Status"             . rails-scm-status-into-root))
   ([rails api-doc]           '("Rails API Doc at Point" . rails-browse-api-at-point))
   ([rails sql]               '("SQL Rails Buffer"       . rails-run-sql))
   ([rails tag]               '("Update TAGS File"       . rails-create-tags))
@@ -127,6 +133,8 @@
   ([rails separator1]        '("--"))
 
   ([rails scr] (cons "Scripts" (make-sparse-keymap "Scripts")))
+  ([rails scr kill]    '(menu-item "Kill current script" rails-script:kill-script :enable (rails-script:running-p)))
+  ([rails scr separator]  '("--"))
 
   ([rails scr gen] (cons "Generate" (make-sparse-keymap "Generate")))
   ([rails scr destr] (cons "Destroy" (make-sparse-keymap "Generators")))
@@ -207,8 +215,7 @@
 (defconst rails-minor-mode-test-current-method-key (rails-key "\C-c ,"))
 
 (defvar rails-minor-mode-map
-  (let ((map (make-keymap)))
-    map))
+  (make-sparse-keymap))
 
 (define-keys rails-minor-mode-map
   ([menu-bar] rails-minor-mode-menu-bar-map)
@@ -229,6 +236,10 @@
   ((rails-key "\C-c g x") 'rails-nav:goto-fixtures)
   ((rails-key "\C-c g f") 'rails-nav:goto-functional-tests)
   ((rails-key "\C-c g u") 'rails-nav:goto-unit-tests)
+  ((rails-key "\C-c g r c") 'rails-nav:goto-rspec-controllers)
+  ((rails-key "\C-c g r f") 'rails-nav:goto-rspec-fixtures)
+  ((rails-key "\C-c g r l") 'rails-nav:goto-rspec-lib)
+  ((rails-key "\C-c g r m") 'rails-nav:goto-rspec-models)
 
   ;; Switch
   ((kbd "<M-S-up>")      'rails-lib:run-primary-switch)
@@ -238,9 +249,12 @@
   ((kbd "<C-return>")    'rails-goto-file-on-current-line)
 
   ;; Scripts & SQL
+  ((rails-key "\C-c k")   'rails-script:kill-script)
   ((rails-key "\C-c e")   'rails-script:generate)
   ((rails-key "\C-c x")   'rails-script:destroy)
   ((rails-key "\C-c s c") 'rails-script:console)
+  ((kbd "C-c C-s")        'rails-script:console)
+  ((kbd "C-c C-z")        'rails-script:console)
   ((rails-key "\C-c s b") 'rails-script:breakpointer)
   ((rails-key "\C-c s s") 'rails-run-sql)
   ((rails-key "\C-c w s") 'rails-ws:toggle-start-stop)
@@ -276,19 +290,27 @@
   ((rails-key "\C-c d m") 'rails-rake:migrate)
   ((rails-key "\C-c d v") 'rails-rake:migrate-to-version)
   ((rails-key "\C-c d p") 'rails-rake:migrate-to-prev-version)
+  ((rails-key "\C-c d u") 'rails-rake:migration-version-up)
+  ((rails-key "\C-c d d") 'rails-rake:migration-version-down)
   ((rails-key "\C-c d t") 'rails-rake:clone-development-db-to-test-db)
-
-
 
   ;; Tests
   ((rails-key "\C-c r")   'rails-rake:task)
   ((rails-key "\C-c t")   'rails-test:run)
   ((rails-key "\C-c .")   'rails-test:run-current)
-  ((rails-key "\C-c y i")   'rails-test:run-integration)
-  ((rails-key "\C-c y u")   'rails-test:run-units)
-  ((rails-key "\C-c y f")   'rails-test:run-functionals)
+  ((rails-key "\C-c /")   'rails-test:rerun-single)
+  ((rails-key "\C-c y i") 'rails-test:run-integration)
+  ((rails-key "\C-c y u") 'rails-test:run-units)
+  ((rails-key "\C-c y f") 'rails-test:run-functionals)
   ((rails-key "\C-c #")   'rails-test:run-recent)
-  ((rails-key "\C-c y a")   'rails-test:run-all)
+  ((rails-key "\C-c y a") 'rails-test:run-all)
+
+  ;; RSpec
+  ((rails-key "\C-c z f") 'rails-spec:run-files)
+  ((rails-key "\C-c z .") 'rails-spec:run-current)
+  ((rails-key "\C-c z a") 'rails-spec:run-all)
+  ((rails-key "\C-c z l") 'rails-spec:run-last)
+  ((rails-key "\C-c z s") 'rails-spec:run-this-spec)
 
   ;; Log files
   ((rails-key "\C-c l")    'rails-log:open)
@@ -305,7 +327,10 @@
   ((rails-key "<f1>")     'rails-browse-api)
   ((rails-key "/")        'rails-script:toggle-output-window)
 
-  ([f9]                  'rails-svn-status-into-root))
+  ;; Other
+  ((rails-key "s")       'rails-grep-project)
+  ((rails-key "C-M-z")   'rails-shell)
+  ([f9]                  'rails-scm-status-into-root))
 
 ;; Global keys and menubar
 
@@ -316,5 +341,87 @@
     map
     [create-rails-project]
     '("Create Rails Project" . rails-script:create-project) 'insert-file))
+
+;; mode-line info
+
+(defvar rails-ui:mode-line-script-name ""
+  "A short name for the currently running script")
+
+(defvar rails-ui:num-errors 0
+  "Number of errors in the latest test task.")
+(defvar rails-ui:num-failures 0
+  "Number of failures in the latest test task.")
+(defvar rails-ui:num-ok 0
+  "Number of tests in the latest test task.")
+
+(defun rails-ui:reset-error-count ()
+  "Reset number of tests/errors/failures to 0."
+  (setq rails-ui:num-ok 0
+	rails-ui:num-errors 0
+	rails-ui:num-failures 0))
+
+(defvar rails-ui:mode-line '(:propertize (" " rails-ui:mode-line-script-string rails-ui:mode-line-test-results))
+  "`rails-mode''s mode-line construct")
+
+(put 'rails-ui:mode-line 'risky-local-variable t)
+
+(defvar rails-ui:idle-script-line (propertize "idle"
+					      'help-echo "No script running.\nmouse-1: toggle output window"
+					      'mouse-face 'mode-line-highlight
+					      'local-map '(keymap (mode-line keymap
+							 (mouse-1 . rails-script:toggle-output-window)))))
+
+(defvar rails-ui:mode-line-script-string
+  '(:eval (if (rails-script:running-p)
+	      (propertize rails-ui:mode-line-script-name
+			  'help-echo (concat "running "
+					     rails-script:running-script-name
+					     "\nmouse-1: toggle output window\nmouse-2: kill script")
+			  'face 'bold
+			  'mouse-face 'mode-line-highlight
+			  'local-map '(keymap (mode-line keymap
+							 (mouse-1 . rails-script:toggle-output-window))
+					      (mouse-2 . rails-script:kill-script)))
+	    rails-ui:idle-script-line)))
+
+(put 'rails-ui:mode-line-script-string 'risky-local-variable t)
+
+(defcustom rails-ui:show-mode-line
+  't
+  "Show test and script status in the mode-line"
+  :type 'boolean
+  :group 'rails
+  :tag "Rails show mode line")
+
+(defvar rails-ui:mode-line-test-results
+  '(:eval
+    (let ((results (propertize
+		    (format "%dE%dF%d" rails-ui:num-ok rails-ui:num-errors rails-ui:num-failures)
+		    'help-echo (format "%d Tests, %d Errors, %d Failures."
+				       rails-ui:num-ok
+				       rails-ui:num-errors
+				       rails-ui:num-failures))))
+      (if (> (+ rails-ui:num-errors rails-ui:num-failures) 0)
+	  (setq results (propertize results 'face 'compilation-error)))
+      (concat " [" results "]"))))
+
+(put 'rails-ui:mode-line-test-results 'risky-local-variable t)
+
+(defun rails-ui:enable-mode-line ()
+  "Add the rails mode-line to the global mode-string."
+  (interactive)
+  (unless (memq 'rails-ui:mode-line global-mode-string)
+    (setq global-mode-string
+	  (append global-mode-string '(rails-ui:mode-line)))))
+
+(defun rails-ui:disable-mode-line ()
+  "Remove the rails mode-line from the global mode-string."
+  (interactive)
+  (setq global-mode-string
+	(remove 'rails-ui:mode-line global-mode-string)))
+
+(add-hook 'rails-minor-mode-hook (lambda ()
+				   (if rails-ui:show-mode-line
+				       (rails-ui:enable-mode-line))))
 
 (provide 'rails-ui)

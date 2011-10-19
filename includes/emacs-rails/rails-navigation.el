@@ -68,7 +68,7 @@
   (interactive)
   (rails-nav:goto-file-with-menu-from-list
    (rails-core:controllers t)
-   "Go to controller"
+   "Go to controller.."
    'rails-core:controller-file))
 
 (defun rails-nav:goto-models ()
@@ -84,7 +84,7 @@
   (interactive)
   (rails-nav:goto-file-with-menu-from-list
    (rails-core:functional-tests)
-   "Go to functional test."
+   "Go to functional test.."
    'rails-core:functional-test-file))
 
 (defun rails-nav:goto-unit-tests ()
@@ -92,7 +92,7 @@
   (interactive)
   (rails-nav:goto-file-with-menu-from-list
    (rails-core:unit-tests)
-   "Go to unit test."
+   "Go to unit test.."
    'rails-core:unit-test-file))
 
 (defun rails-nav:goto-observers ()
@@ -136,13 +136,56 @@
    (lambda (plugin)
      (concat "vendor/plugins/" plugin "/init.rb"))))
 
+(defun rails-nav:goto-rspec-controllers ()
+  "Go to controller specs."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:rspec-controllers)
+   "Go to controller spec.."
+   'rails-core:rspec-controller-file))
+
+(defun rails-nav:goto-rspec-lib ()
+  "Go to lib specs."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:rspec-lib)
+   "Go to lib spec.."
+   'rails-core:rspec-lib-file))
+
+(defun rails-nav:goto-rspec-models ()
+  "Go to model specs."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:rspec-models)
+   "Go to model spec.."
+   'rails-core:rspec-model-file))
+
+(defun rails-nav:goto-rspec-views ()
+  "Go to view specs."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:rspec-views)
+   "Go to view spec.."
+   'rails-core:rspec-view-file))
+
+(defun rails-nav:goto-rspec-fixtures ()
+  "Go to rspec fuxtures."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:rspec-fixtures)
+   "Go to rspec fixtures.."
+   'rails-core:rspec-fixture-file))
+
 (defun rails-nav:create-new-layout (&optional name)
   "Create a new layout."
   (let ((name (or name (read-string "Layout name? "))))
     (when name
-      (rails-core:find-file (rails-core:layout-file name))
-      (if (y-or-n-p "Insert initial template? ")
-          (insert rails-layout-template)))))
+      (let* ((default-type (or rails-controller-layout:recent-template-type (car rails-templates-list)))
+             (type (completing-read (format "Create %s.[%s]? " name default-type)
+                                    rails-templates-list nil nil default-type)))
+        (rails-core:find-file (rails-core:file (format "app/views/layouts/%s.%s" name type)))
+        (if (y-or-n-p "Insert initial template? ")
+          (insert rails-layout-template))))))
 
 (defun rails-nav:goto-layouts ()
   "Go to layouts."
@@ -189,12 +232,13 @@ current line for a series of patterns."
          (block ,name
            ,@(loop for (sexpr . map) in conditions
                    collect
-                   `(when (string-match ,sexpr ,line)
-                      (let ,(loop for var-acc in map collect
-                                  (if (listp var-acc)
+                   `(let ((case-fold-search nil))
+                      (when (string-match ,sexpr ,line)
+                        (let ,(loop for var-acc in map collect
+                                    (if (listp var-acc)
                                       `(,(first var-acc) (match-string ,(second var-acc) ,line))
-                                    var-acc))
-                        (return-from ,name (progn ,@body))))))))))
+                                      var-acc))
+                          (return-from ,name (progn ,@body)))))))))))
 
 (defun rails-goto-file-on-current-line (prefix)
   "Analyze a string (or ERb block) and open some file related with it.
@@ -228,8 +272,12 @@ Rules for actions/controllers:
     rails-line-->controller+action
     rails-line-->layout
     rails-line-->stylesheet
-    rails-line-->js)
-  "Functions that will ne called to analyze the line when
+    rails-line-->js
+    rails-line-->association-model
+    rails-line-->single-association-model
+    rails-line-->multi-association-model
+    rails-line-->class)
+  "Functions that will be called to analyze the line when
 rails-goto-file-on-current-line is run.")
 
 (def-goto-line rails-line-->stylesheet (("[ ]*stylesheet_link_tag[ ][\"']\\([^\"']*\\)[\"']"
@@ -261,6 +309,21 @@ rails-goto-file-on-current-line is run.")
   (rails-core:find-or-ask-to-create
    (format "JavaScript file \"%s\" does not exist do you whant to create it? " name)
    (rails-core:js-file name)))
+
+(def-goto-line rails-line-->association-model (("^[ \t]*\\(has_one\\|belongs_to\\|has_many\\|has_and_belongs_to_many\\)[ \t].*:class_name[ \t]*=>[ \t]*[\"']\\([^\"']*\\)[\"']"
+                                                (name 2)))
+  (rails-core:find-file (rails-core:model-file name)))
+
+(def-goto-line rails-line-->single-association-model (("^[ \t]*\\(has_one\\|belongs_to\\)[ \t]*:\\([a-z0-9_]*\\)" (name 2)))
+  (rails-core:find-file (rails-core:model-file name)))
+
+(def-goto-line rails-line-->multi-association-model (("^[ \t]*\\(has_many\\|has_and_belongs_to_many\\)[ \t]*:\\([a-z0-9_]*\\)" (name 2)))
+  (rails-core:find-file (rails-core:model-file (singularize-string name))))
+
+(def-goto-line rails-line-->class (("\\b\\(\\([A-Z][a-z]*\\)+\\)\\b" (name 1)))
+  (or (rails-core:find-file-if-exist (rails-core:model-file name))
+      (rails-core:find-file-if-exist (rails-core:controller-file name))
+      (rails-core:find-file-if-exist (rails-core:lib-file name))))
 
 (defvar rails-line-to-controller/action-keywords
   '("render" "redirect_to" "link_to" "form_tag" "start_form_tag" "render_component"

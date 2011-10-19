@@ -29,6 +29,7 @@
 (defconst rails-snippets-feature:list
   '((0 "ruby")
     (1 "loops" ruby-mode-abbrev-table
+       ("end" "$>$.\nend$>" "end") ;; to avoid expanding when i want to indent
        ("while" "while $${condition}\n$>$.\nend$>" "while ... end")
        ("when" "when $${condition}\n$>$." "when ...")
        ("w" "attr_writer :$${attr_names}" "attr_writer ...")
@@ -39,6 +40,14 @@
        ("forin" "for $${element} in $${collection}\n$>$${element}.$.\nend$>" "for ... in ... end")
        ("dow" "downto($${0}) { |$${n}|$. }" "downto(0) { |n| ... }")) ; loops
     (1 "general" ruby-mode-abbrev-table
+       ("asr" "assert_raise $${Exception} { $. }" "assert_raise(...) { ... }")
+       ("asnr" "assert_nothing_raised $${Exception}  { $. }" "assert_nothing_raised(...) { ... }")
+       ("asn" "assert_nil $${instance}" "assert_nil(...)")
+       ("ase" "assert_equal $${expected}, $${actual}" "assert_equal(...)")
+       ("asne" "assert_not_equal $${unexpected}, $${actual}" "assert_not_equal(...)")
+       ("asm" "assert_match(/$${expected_pattern}/, $${actual_string})" "assert_match(...)")
+       ("asnm" "assert_no_match(/$${unexpected_pattern}/, $${actual_string})" "assert_no_match(...)")
+       ("asnn" "assert_not_nil $${instance}" "assert_not_nil(...)")
        ("ha" "{ $>:$. }" "{ :key => 'value' }")
        (":"  ":$${key} => '$${value}'" ":key => 'value'")
        ("yl" "File.open($${yaml}) { |$${file}| YAML.load($${file}) }" "YAML.load(file)")
@@ -136,7 +145,7 @@
        ("array" "Array.new($${10}) { |$${i}|$. }" "Array.new(10) { |i| ... }")
        ("any" "any? { |$${e}| $. }" "any? { |e| ... }")
        ("all" "all? { |$${e}| $. }" "all? { |e| ... }")) ; collections
-    (0 "erb" html-mode-abbrev-table html-helper-mode-abbrev-table nxml-mode-abbrev-table
+    (0 "erb" html-mode-abbrev-table html-helper-mode-abbrev-table nxml-mode-abbrev-table rhtml-mode-abbrev-tables
        ("title" "<title>$${title}</title>" "title")
        ("textarea" "<textarea name=\"$${Name}\" rows=\"$${8}\" cols=\"$${40}\">$.</textarea>" "textarea")
        ("table" "<table border=\"$${0}\" $${cellpadding}>\n$><tr><th>$${Header}</th></tr>\n$><tr><td>$${Data}</td></tr>\n</table>" "table")
@@ -157,7 +166,9 @@
        ("head" "<head>\n$><meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\"/>\n$><title>$${title}</title>\n$>$.\n</head>" "head")
        ("h" "<h1 id=\"$${alpha}\">$${paste}</h1>" "heading")
        ("ft" "<%= form_tag :action => \"$${update}\" %>\n$.\n<%= end_form_tag %>" "form_tag")
-       ("ff" "<%= form_for :$${item}, :action => \"$${update}\" %>\n$.\n<% end %>" "form_for")
+       ("ff" "<% form_for :$${item}, :action => \"$${update}\" do |f| -%>\n$.\n<% end -%>" "form_for")
+       ("slt" "<%= stylesheet_link_tag \"$${1}\" %>" "stylesheet_link_tag")
+       ("jit" "<%= javascript_include_tag \"$${1}\" %>" "javascript_include_tag")
        ("form" "<form action=\"$${action}\" method=\"$${post}\" accept-charset=\"utf-8\">\n$>$.\n\n$><p><input type=\"submit\" value=\"Continue &rarr;\"/></p>\n</form>" "form")
        ("dtht" "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\n$>\"http://www.w3.org/TR/html4/strict.dtd\">\n" "HTML -- 4.01 Strict")
        ("dchttr" "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n$>\"http://www.w3.org/TR/html4/loose.dtd\">\n" "HTML -- 4.01 Transitional")
@@ -172,6 +183,8 @@
        ("%ifel" "<% if $${cond} -%>\n$.\n<% else -%>\n<% end -%>" "<% if/else/end %>")
        ("%unless" "<% unless $${cond} -%>\n$.\n<% end -%>" "<% unless/end %>")
        ("%for" "<% for $${elem} in @$${list} %>\n$>$.\n<% end %>$>" "<% for/end %>")
+       ("han" "$${Model}.human_attribute_name('$${title}')" "human_attribute_name")
+       ("hn" "$${Model}.human_name" "human_name")
        ("%" "<% $. -%>" "<% ... %>")
        ("%%" "<%= $. %>" "<%= ... %>")) ; erb
     (0 "controller" rails-controller-minor-mode-abbrev-table
@@ -183,6 +196,7 @@
        rails-view-minor-mode-abbrev-table
        rails-helper-minor-mode-abbrev-table
        rails-functional-test-minor-mode-abbrev-table
+       rails-integration-test-minor-mode-abbrev-table
        ("rest" "respond_to do |format|\n$>format.html$>$.\nend$>" "respond_to ..." rails-controller-minor-mode-abbrev-table)
        ("rindex" "$${,rails-snippets-feature:rest-index}" "models_url")
        ("rshow" "$${,rails-snippets-feature:rest-show}" "model_url(@model)")
@@ -209,7 +223,7 @@
        ("rns" "render :nothing => $${true}, :status => $${401}" "render (nothing, status)")
        ("rp" "render :partial => '$${item}'" "render (partial)")
        ("rpc" "render :partial => '$${item}', :collection => $${items}" "render (partial, collection)")
-       ("rpl" "render :partial => '$${item}', :locals => { :$${name} => '$${value}'$${4} }" "render (partial, locals)")
+       ("rpl" "render :partial => '$${item}', :locals => { :$${name} => $${value} }" "render (partial, locals)")
        ("rpo" "render :partial => '$${item}', :object => $${object}" "render (partial, object)")
        ("rcea" "render_component :action => '$${index}'" "render_component (action)")
        ("rcec" "render_component :controller => '$${items}'" "render_component (controller)")
@@ -228,6 +242,8 @@
        ("rdl" "RAILS_DEFAULT_LOGGER.debug '$${message}'$." "RAILS_DEFAULT_LOGGER.debug")
        ("nr" "@$${item}.new_record?" "item.new_record?")) ; rails
     (0 "model" rails-model-minor-mode-abbrev-table
+       ("ns" "named_scope :$${name}, :conditions => {:$${attribute} => $${value}}" "named_scope")
+       ("nsl" "named_scope :$${name},  lambda {|$${param}| { :conditions => ['$${attribute} > ?', $${param}]} }" "named_scope_lamba")
        ("va" "validates_associated :$${attribute}" "validates_associated")
        ("vc" "validates_confirmation_of :$${attribute}" "validates_confirmation_of")
        ("ve" "validates_exclusion_of :$${attribute}" "validates_exclusion_of")
@@ -239,7 +255,7 @@
        ("hm" "has_many :$${objects}" "has_many")
        ("hmt" "has_many :$${objects}, :through => :$${,rails-snippets-feature:prev-has-many-table-name}" "has_many :through")
        ("ho" "has_one :$${object}" "has_one")
-       ("habtm" "has_and_belongs_to_many :$${object}" "has_and_belongs_to_many")) ; model
+       ("habtm" "has_and_belongs_to_many :$${object}, :join_table => '$${table_name}', :foreign_key => '$${foreign_key}'" "has_and_belongs_to_many")) ; model
     (0 "migrations" rails-migration-minor-mode-abbrev-table
        ("tcls" "t.column :$${title}, :$${string}\n$>tcls$." "create several columns")
        ("tcl" "t.column :$${title}, :$${string}$." "create column")
@@ -247,6 +263,7 @@
        ("acl" "add_column :$${,rails-snippets-feature:migration-table-name}, :$${column}, :$${string}" "add column")
        ("ai" "add_index :$${,rails-snippets-feature:migration-table-name}, $${column}" "add index")
        ("aiu" "add_index :$${,rails-snippets-feature:migration-table-name}, $${column}, :unique => true" "add unique index")
+       ("rmi" "remove_index :$${,rails-snippets-feature:migration-table-name}, $${column}" "remove index")
        ("rmcl" "remove_column :$${,rails-snippets-feature:migration-table-name}, :$${column}" "remove column")
        ("recl" "rename_column :$${column}, :$${new_column}" "rename column")
        ("dt" "drop_table :$${,rails-snippets-feature:migration-table-name}$." "drop table")
@@ -261,30 +278,53 @@
        ("par" "params[:$${id}]" "params[...]")
        ("session" "session[:$${User}]" "session[...]")
        ("flash" "flash[:$${notice}] = '$${Successfully}'$." "flash[...]")) ; environment
-    (0 "tests" rails-functional-test-minor-mode-abbrev-table rails-unit-test-minor-mode-abbrev-table
-       ("fix" "$${,rails-snippets-feature:fixture}(:$${one})$." "models(:name)")) ; functional tests
-    (0 "assertions" rails-functional-test-minor-mode-abbrev-table rails-unit-test-minor-mode-abbrev-table
+    (0 "tests" rails-functional-test-minor-mode-abbrev-table rails-unit-test-minor-mode-abbrev-table rails-integration-test-minor-mode-abbrev-table
+       ("fix" "$${,rails-snippets-feature:fixture}(:$${one})$." "models(:name)")
+       ("rth" "require File.dirname(__FILE__) + '/../test_helper'" "require tst_helper")
+       ) ; functional tests
+    (0 "shoulda" rails-functional-test-minor-mode-abbrev-table rails-unit-test-minor-mode-abbrev-table rails-integration-test-minor-mode-abbrev-table
+       ("cont" "context \"$${description}\" do\n$>setup do\n$>$${setup}\nend$>\n\n$>should$.\nend$>" "context block with setup")
+       ("should" "should \"$${description}\" do\n$>$.\nend$>" "should block")
+       ("shoulds" "should \"$${description}\" do\n$>flunk\nend$>\n\n$>shoulds$." "several should blocks")
+       ("shoulde" "should_eventually \"$${description}\" do\n $>$.\nend$>" "should_eventually block")
+       ("shouldes" "should_eventually \"$${description}\"\n$>shouldes$." "several should_eventually statements")
+       ("laf" "fixtures :all" "fixtures :all")
+       ("sat" "should_assign_to :$${variable}" "should_assign_to")
+       ("savf" "should_allow_values_for :$${attribute}" "should_allow_values_for")
+       ("sbt" "should_belong_to :$${object}" "should_belong_to")
+       ("sbr" "should_be_restful do |$${resource}|\n $>$${resource}.$.\nend$>" "should_be_restful {|resource| ... }")
+       ("selir" "should_ensure_length_in_range :$${attribute}, ($${range})" "should_ensure_length_in_range")
+       ("sevir" "should_ensure_value_in_range :$${attribute}, ($${range})" "should_ensure_value_in_range")
+       ("sho" "should_have_one :$${object}" "should_have_one")
+       ("shabtm" "should_have_and_belong_to_many :$${objects}" "should_have_and_belong_to_many")
+       ("shm" "should_have_many :$${objects}" "should_have_many")
+       ("snstf" "should_not_set_the_flash" "should_not_set_the_flash")
+       ("snat" "should_not_assign_to :$${variable}" "should_not_assign_to")
+       ("snavf" "should_not_allow_values_for :$${attribute}" "should_not_allow_values_for")
+       ("soanvf" "should_only_allow_numeric_values_for :$${attribute}" "should_only_allow_numeric_values_for")
+       ("sraf" "should_render_a_form" "should_render_a_form")
+       ("srdt" "should_redirect_to $${redirect}" "should_redirect_to")
+       ("srt" "should_render_template :$${template}" "should_render_template")
+       ("sra" "should_require_attributes :$${attribute}" "should_require_attributes")
+       ("srua" "should_require_unique_attributes :$${attribute}" "should_require_unique_attributes")
+       ("srw" "should_respond_with :$${response}" "should_respond_with")
+       ("sstft" "should_set_the_flash_to $${value}" "should_set_the_flash_to")) ; shoulda tests
+    (0 "assertions" rails-functional-test-minor-mode-abbrev-table rails-unit-test-minor-mode-abbrev-table rails-integration-test-minor-mode-abbrev-table
        ("art" "assert_redirected_to :action => '$${index}'" "assert_redirected_to")
        ("as" "assert $${test}" "assert(...)")
        ("asa" "assert assigns(:$${,rails-snippets-feature:model-name})" "assert assigns(...)")
-       ("ase" "assert_equal $${expected}, $${actual}" "assert_equal(...)")
        ("asid" "assert_in_delta $${expected_float}, $${actual_float}, $${20}" "assert_in_delta(...)")
        ("asio" "assert_instance_of $${ExpectedClass}, $${actual_instance}" "assert_instance_of(...)")
        ("asko" "assert_kind_of $${ExpectedKind}, $${actual_instance}" "assert_kind_of(...)")
-       ("asm" "assert_match(/$${expected_pattern}/, $${actual_string})" "assert_match(...)")
-       ("asn" "assert_nil $${instance}" "assert_nil(...)")
-       ("asne" "assert_not_equal $${unexpected}, $${actual}" "assert_not_equal(...)")
-       ("asnm" "assert_no_match(/$${unexpected_pattern}/, $${actual_string})" "assert_no_match(...)")
-       ("asnn" "assert_not_nil $${instance}" "assert_not_nil(...)")
-       ("asnr" "assert_nothing_raised $${Exception}  { $. }" "assert_nothing_raised(...) { ... }")
        ("asns" "assert_not_same $${unexpected}, $${actual}" "assert_not_same(...)")
        ("asnt" "assert_nothing_thrown { $. }" "assert_nothing_thrown { ... }")
        ("aso" "assert_operator $${left}, :$${operator}, $${right}" "assert_operator(...)")
-       ("asr" "assert_raise $${Exception} { $. }" "assert_raise(...) { ... }")
        ("asre" "assert_response :$${success}" "assert_response")
        ("asrt" "assert_respond_to $${object}, :$${method}" "assert_respond_to(...)")
        ("ass" "assert_same $${expected}, $${actual}" "assert_same(...)")
        ("assd" "assert_send [$${object}, :$${message}, $${args}]" "assert_send(...)")
+       ("asd" "assert_difference \"$${count}\", $${1} do\n$>$.\nend$>" "assert_difference .. do .. end")
+       ("asnd" "assert_no_difference \"$${count}\" do\n$>$.\nend$>" "assert_no_difference .. do .. end")
        ("ast" "assert_throws :$${expected} { $. }" "assert_throws(...) { ... }")
        ("astm" "assert_template '$${index}'" "assert_template"))))
 

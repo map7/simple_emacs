@@ -5,8 +5,8 @@
 ;; Authors: Dmitry Galinsky <dima dot exe at gmail dot com>
 
 ;; Keywords: ruby rails languages oop
-;; $URL: svn://rubyforge.org/var/svn/emacs-rails/trunk/rails-ruby.el $
-;; $Id: rails-ruby.el 232 2008-08-01 22:42:31Z dimaexe $
+;; $URL$
+;; $Id$
 
 ;;; License
 
@@ -116,6 +116,7 @@ See the variable `align-rules-list' for more details.")
 
 (defun flymake-ruby-load ()
   (when (and (buffer-file-name)
+             (not (file-remote-p (buffer-file-name))) ; FIX: cabo
              (string-match
               (format "\\(%s\\)"
                       (string-join
@@ -137,7 +138,7 @@ See the variable `align-rules-list' for more details.")
 (defun ruby-newline-and-indent ()
   (interactive)
   (newline)
-  (ruby-indent-command))
+  (ruby-indent-line))
 
 (defun ruby-toggle-string<>simbol ()
   "Easy to switch between strings and symbols."
@@ -173,17 +174,21 @@ See the variable `align-rules-list' for more details.")
 
 (require 'inf-ruby)
 
-(defun run-ruby-in-buffer (buf script &optional params)
+(defun run-ruby-in-buffer (buf script &rest params)
   "Run CMD as a ruby process in BUF if BUF does not exist."
+  (message "run-ruby-in-buffer %s" params)
   (let ((abuf (concat "*" buf "*")))
     (when (not (comint-check-proc abuf))
-      (set-buffer (make-comint buf rails-ruby-command nil script params)))
-    (inferior-ruby-mode)
-    (make-local-variable 'inferior-ruby-first-prompt-pattern)
-    (make-local-variable 'inferior-ruby-prompt-pattern)
-    (setq inferior-ruby-first-prompt-pattern "^>> "
-          inferior-ruby-prompt-pattern "^>> ")
-    (pop-to-buffer abuf)))
+      (set-buffer (apply #'make-comint buf rails-ruby-command nil script params)))
+    (pop-to-buffer abuf)
+    (when (fboundp 'inf-ruby-mode)
+      (inf-ruby-mode)
+      (when (< (rails-core:current-rails-major-version) 3)
+        (make-local-variable 'inf-ruby-first-prompt-pattern)
+        (make-local-variable 'inf-ruby-prompt-pattern)
+        (setq inf-ruby-first-prompt-pattern "^>> "
+              inf-ruby-prompt-pattern "^>> "
+              inf-ruby-buffer (current-buffer))))))
 
 (defun complete-ruby-method (prefix &optional maxnum)
   (if (capital-word-p prefix)
