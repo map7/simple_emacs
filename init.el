@@ -59,14 +59,11 @@
 (custom-set-faces
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
-
-
 ; Auto complete settings
 (setq hippie-expand-try-functions-list
       '(try-complete-abbrev
     try-complete-file-name
     try-expand-dabbrev))
-
 
 ; -------------------- Custom Settings --------------------
 (custom-set-variables
@@ -75,7 +72,6 @@
  '(org-agenda-files (quote ("~/Dropbox/org")))
  '(rails-ws:default-server-type "mongrel")
  '(tooltip-mode nil))
-
 
 ; -------------------- File plugins --------------------
 ; Intelligent file opener
@@ -108,9 +104,7 @@
 ; haml-sass
 (require 'haml-mode nil 't)
  (add-hook 'haml-mode-hook
-  '(lambda ()
-     (setq tab-width 2)
-     ))
+  '(lambda () (setq tab-width 2)))
 (require 'sass-mode nil 't)
 (add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
 
@@ -123,33 +117,22 @@
   "run html2haml on current buffer"
   (interactive)
   (setf filename buffer-file-name)
-  (setf newfilename (concat
-		     (car (split-string filename "\\.")) ".haml"))
+  (setf newfilename (concat (car (split-string filename "\\.")) ".haml"))
   (save-buffer)
-  (shell-command (concat
-		  "html2haml " filename " > " newfilename))
+  (shell-command (concat "html2haml " filename " > " newfilename))
   (kill-buffer (current-buffer))
   (delete-file filename)
   (find-file newfilename))
 
-; -------------------- Rails Testing -------------------- 
+;; -------------------- Rails Testing -------------------- 
 ;; Cucumber
 (require 'feature-mode)
 
-; -------------------- Rails Tools -------------------- 
-; Check out abbrev-mode instead as it seems lighter.
+;; -------------------- Rails Tools -------------------- 
+;; Check out abbrev-mode instead as it seems lighter.
 (require 'snippet)
 
-; -------------------- Ruby plugins -------------------- 
-;; ; Taken from the comment section in inf-ruby.el
-;; (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files")
-;; (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
-;; (add-to-list 'auto-mode-alist '("\\.rhtml$" . html-mode))
-;; (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
-;; (autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
-;; (autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
-;; (add-hook 'ruby-mode-hook '(lambda () (inf-ruby-keys)))
-
+;; -------------------- Ruby plugins -------------------- 
 ;; Ruby-electric
 (require 'ruby-electric)
 (add-hook 'ruby-mode-hook
@@ -164,14 +147,12 @@
             (set (make-local-variable 'tab-width) 2)
             (imenu-add-to-menubar "IMENU")
             (require 'ruby-electric)
-            (ruby-electric-mode t)
-            ))
+            (ruby-electric-mode t)))
 
 ;; Inferior Ruby Mode
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
 (autoload 'inf-ruby-keys "inf-ruby" "" t)
-(eval-after-load 'ruby-mode
-'(add-hook 'ruby-mode-hook 'inf-ruby-keys))
+(eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
 
 ; -------------------- SQL --------------------
 (defun my-sql-interactive-mode-hook ()
