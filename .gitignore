@@ -1,0 +1,7 @@
+elpa
+backups
+auto-save-list  
+.*~
+places
+.smex-items
+url
