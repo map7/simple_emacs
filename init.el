@@ -1,6 +1,7 @@
 ; Init.el
 ; Author: Michael Pope
 ; Desc:   Emacs v24 config file made for development (mostly Ruby on Rails)
+;; Ref: http://itstickers.blogspot.com/2010/11/all-about-emacs.html
 
 (require 'package)
 (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
@@ -8,7 +9,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
+      (list 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -133,6 +134,13 @@
 (require 'snippet)
 
 ;; -------------------- Ruby plugins -------------------- 
+(add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
+
 ;; Ruby-electric
 (require 'ruby-electric)
 (add-hook 'ruby-mode-hook
@@ -154,9 +162,30 @@
 (autoload 'inf-ruby-keys "inf-ruby" "" t)
 (eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
 
-; -------------------- SQL --------------------
+;; -------------------- SQL --------------------
 (defun my-sql-interactive-mode-hook ()
   (setq tab-width 8))
 (add-hook 'sql-interactive-mode-hook 'my-sql-interactive-mode-hook)
 (require 'sql)
 (put 'upcase-region 'disabled nil)
+
+
+;; -------------------- Autocomplete --------------------
+;; Use with Rsense for Ruby autocomplete:
+;; http://cx4a.org/software/rsense/
+;; Follow instructions on: http://itstickers.blogspot.com/2010/11/all-about-emacs.html
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "!/.emacs.d/ac-dict")
+(ac-config-default)
+
+;; Rsense
+(setq rsense-home "/opt/rsense-0.3")
+(add-to-list 'load-path (concat rsense-home "/etc"))
+(require 'rsense)
+ 
+;; Rsense + Autocomplete
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (add-to-list 'ac-sources 'ac-source-rsense-method)
+            (add-to-list 'ac-sources 'ac-source-rsense-constant)))
+
