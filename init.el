@@ -16,7 +16,6 @@
 ; directory to put various el files into
 (add-to-list 'load-path "~/.emacs.d/includes")
 (add-to-list 'load-path "~/.emacs.d/includes/emacs-rails")
-(add-to-list 'load-path "~/.emacs.d/includes/yaml-mode")
 (add-to-list 'load-path "~/.emacs.d/includes/ruby-mode")
 (add-to-list 'load-path "~/.emacs.d/includes/yasnippet")
 (add-to-list 'load-path "~/.emacs.d/includes/egg") ; new git plugin
