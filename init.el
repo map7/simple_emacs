@@ -8,7 +8,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
+      (list 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -17,7 +17,6 @@
 ; directory to put various el files into
 (add-to-list 'load-path "~/.emacs.d/includes")
 (add-to-list 'load-path "~/.emacs.d/includes/emacs-rails")
-(add-to-list 'load-path "~/.emacs.d/includes/yasnippet")
 (add-to-list 'load-path "~/.emacs.d/includes/egg") ; new git plugin
 (add-to-list 'load-path "~/.emacs.d/includes/feature-mode")
 
@@ -142,9 +141,9 @@
 ; -------------------- Rails Tools -------------------- 
 ; Check out abbrev-mode instead as it seems lighter.
 ; yasnippet
-(require 'yasnippet)
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/includes/yasnippet/snippets/")
+;; (require 'yasnippet-bundle)
+;; (yas/initialize)
+;; (yas/load-directory "~/.emacs.d/includes/yasnippet/snippets/")
 
 (require 'snippet)
 
