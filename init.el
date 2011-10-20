@@ -141,21 +141,25 @@
 (add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
 
-;; Ruby-electric
+;; ;; Ruby-electric
 (require 'ruby-electric)
-(add-hook 'ruby-mode-hook
-          (lambda()
-            (add-hook 'local-write-file-hooks
-                      '(lambda()
-                         (save-excursion
-                           (untabify (point-min) (point-max))
-                           ;(delete-trailing-whitespace)
-                           )))
-            (set (make-local-variable 'indent-tabs-mode) 'nil)
-            (set (make-local-variable 'tab-width) 2)
-            (imenu-add-to-menubar "IMENU")
-            (require 'ruby-electric)
-            (ruby-electric-mode t)))
+(add-hook 'ruby-mode-hook 'ruby-electric-mode)
+
+;; Issues under some compiles of emacs
+;; (require 'ruby-electric)
+;; (add-hook 'ruby-mode-hook
+;;           (lambda()
+;;             (add-hook 'local-write-file-hooks
+;;                       '(lambda()
+;;                          (save-excursion
+;;                            (untabify (point-min) (point-max))
+;;                            ;(delete-trailing-whitespace)
+;;                            )))
+;;             (set (make-local-variable 'indent-tabs-mode) 'nil)
+;;             (set (make-local-variable 'tab-width) 2)
+;;             (imenu-add-to-menubar "IMENU")
+;;             (require 'ruby-electric)
+;;             (ruby-electric-mode t)))
 
 ;; Inferior Ruby Mode
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
