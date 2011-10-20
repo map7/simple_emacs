@@ -1,0 +1,46 @@
+* Emacs
+
+This emacs mostly uses packages in the aim to simplify the management of my emacs configuration. I use two repos:
+
+: tromey:    http://tromey.com/elpa/
+: marmalade: http://marmalade-repo.org/
+
+** Requirements
+
+emacs 24.0
+
+I've tested this on ubuntu 10.04.3, but it should work on any Linux machine.
+
+** Installation
+
+Back up your .emacs.d directory
+: $ mv ~/.emacs.d ~/.emacs.d.bak
+
+Clone this repo
+: $ git clone git://github.com/map7/simple_emacs.git ~/.emacs.d
+
+Start emacs and it should compile everything
+
+** Advanced auto-complete section using Rsense
+
+Rsense is a third party tool to help create popups in emacs for auto-complete.
+: $ wget http://cx4a.org/pub/rsense/rsense-0.3.zip
+: $ sudo unzip rsence-0.3 -d /opt
+
+I added the following to my .zshrc (I recommend using ZSH for Ruby on Rails).
+: export RSENSE_HOME=/opt/rsense-0.3/
+
+Start a new shell
+: $ chmod +x $RSENSE_HOME/bin/rsense
+: $ ruby $RSENSE_HOME/etc/config.rb > ~/.rsense
+
+Restart emacs and test (I usually test by typing in a string and start typing upcase).
+: "test".up... (You should get a list of options)
+
+** References
+
+The most up to date emacs + rails I could find (as of 20/10/2011).
+http://itstickers.blogspot.com/2010/11/all-about-emacs.html
+
+Rinari (Ruby on Rails minor mode) article
+http://arunsark.wordpress.com/2011/03/24/back-to-emacs-for-ruby-on-rails/
