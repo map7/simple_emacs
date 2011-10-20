@@ -9,7 +9,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
+      (list 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -188,4 +188,9 @@
           (lambda ()
             (add-to-list 'ac-sources 'ac-source-rsense-method)
             (add-to-list 'ac-sources 'ac-source-rsense-constant)))
+
+
+;; RVM in emacs
+(require 'rvm)
+(rvm-use-default) ;; use rvm’s default ruby for the current Emacs session
 
