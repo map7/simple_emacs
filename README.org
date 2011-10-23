@@ -49,3 +49,8 @@ http://itstickers.blogspot.com/2010/11/all-about-emacs.html
 
 Rinari (Ruby on Rails minor mode) article
 http://arunsark.wordpress.com/2011/03/24/back-to-emacs-for-ruby-on-rails/
+
+
+** Package must reads
+
+Undo Tree - http://marmalade-repo.org/packages/undo-tree
