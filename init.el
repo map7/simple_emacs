@@ -20,7 +20,7 @@
 (add-to-list 'load-path "~/.emacs.d/includes/emacs-rails")
 
 ; Keybinding
-(global-set-key [f5] 'egg-status)
+(global-set-key [f5] 'magit-status)
 (global-set-key [f6] 'eshell)
 (global-set-key [f7] 'split-window-vertically)
 (global-set-key [f8] 'next-multiframe-window)
@@ -197,4 +197,3 @@
 ;; RVM in emacs
 (require 'rvm)
 (rvm-use-default) ;; use rvm’s default ruby for the current Emacs session
-
