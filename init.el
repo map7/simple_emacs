@@ -26,6 +26,8 @@
 (global-set-key [f8] 'next-multiframe-window)
 (global-set-key [f12] 'switch-full-screen)
 
+(global-set-key (kbd "C-x f") 'rinari-find-file-in-project)
+
 ;fullscreen mode
 (defun switch-full-screen ()
   (interactive)
