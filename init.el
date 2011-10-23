@@ -9,7 +9,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
+      (list 'multi-term 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -21,7 +21,7 @@
 
 ; Keybinding
 (global-set-key [f5] 'magit-status)
-(global-set-key [f6] 'eshell)
+(global-set-key [f6] 'multi-term)
 (global-set-key [f7] 'split-window-vertically)
 (global-set-key [f8] 'next-multiframe-window)
 (global-set-key [f12] 'switch-full-screen)
