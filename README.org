@@ -5,6 +5,11 @@ This emacs mostly uses packages in the aim to simplify the management of my emac
 : tromey:    http://tromey.com/elpa/
 : marmalade: http://marmalade-repo.org/
 
+NOTE: Adding tromey is a work around to getting inf-ruby & ruby-mode working together nicely through marmalade. Refer to this issue:
+https://github.com/nonsequitur/inf-ruby/issues/1#issuecomment-2488656
+
+Once this issue is resolved I recommend removing tromey as it has a heap of old packages in it.
+
 ** Requirements
 
 emacs 24.0
