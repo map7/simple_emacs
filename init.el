@@ -9,16 +9,27 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
-(setq abg-required-packages
+(setq required-packages
       (list 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
-(dolist (package abg-required-packages)
+(dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
     (package-install package)))
 
-; directory to put various el files into
-(add-to-list 'load-path "~/.emacs.d/elisp/external")
-(add-to-list 'load-path "~/.emacs.d/elisp/external/emacs-rails")
+
+;; Setup external directory variable
+(setq elisp-dir
+      (expand-file-name "elisp" ".emacs.d"))
+(setq elisp-external-dir
+      (expand-file-name "external" elisp-dir))
+
+;; Add external projects to load path
+(add-to-list 'load-path elisp-external-dir)
+
+(dolist (project (directory-files elisp-external-dir t "\\w+"))
+  (when (file-directory-p project)
+    (add-to-list 'load-path project)))
+
 
 ; Keybinding
 (global-set-key [f5] 'magit-status)
@@ -204,5 +215,4 @@
 ;; Switch windows easier when you have 3 or more.
 (require 'switch-window)
 
-;; gh (Github) 
 
