@@ -32,6 +32,7 @@
 
 
 ; Keybinding
+(global-set-key [f4] 'gist-region-or-buffer)
 (global-set-key [f5] 'magit-status)
 (global-set-key [f6] 'multi-term)
 (global-set-key [f7] 'split-window-vertically)
