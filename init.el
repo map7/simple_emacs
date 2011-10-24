@@ -216,5 +216,10 @@
 (require 'switch-window)
 
 ;; gist
-(setq secrets-file
+(require 'gist)
+(setq gist-authentication-function 'gist-basic-authentication)
+
+(setq the-secrets-file
       (expand-file-name "secrets.el" ".emacs.d"))
+(when (file-exists-p the-secrets-file)
+  (load the-secrets-file))
