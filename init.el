@@ -9,7 +9,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq abg-required-packages
-      (list 'multi-term 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
+      (list 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -199,3 +199,6 @@
 ;; RVM in emacs
 (require 'rvm)
 (rvm-use-default) ;; use rvm’s default ruby for the current Emacs session
+
+;; Switch windows easier when you have 3 or more.
+(require 'switch-window)
