@@ -24,6 +24,10 @@ Back up your .emacs.d directory
 Clone this repo
 : $ git clone git://github.com/map7/simple_emacs.git ~/.emacs.d
 
+Get git submodules (within ~/.emacs.d)
+: $ git submodule init
+: $ git submodule update
+
 Start emacs and it should compile everything
 
 ** Advanced auto-complete section using Rsense
@@ -49,7 +53,6 @@ http://itstickers.blogspot.com/2010/11/all-about-emacs.html
 
 Rinari (Ruby on Rails minor mode) article
 http://arunsark.wordpress.com/2011/03/24/back-to-emacs-for-ruby-on-rails/
-
 
 ** Package must reads
 
