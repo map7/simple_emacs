@@ -46,6 +46,11 @@ Start a new shell
 Restart emacs and test (I usually test by typing in a string and start typing upcase).
 : "test".up... (You should get a list of options)
 
+** Gist setup (optional)
+If you want to automatically post gists, list gists, etc then you have to setup a file called ./emacs.d/secrets.el with your password
+
+: (setq gist-user-password "your-github-password")
+
 ** References
 
 The most up to date emacs + rails I could find (as of 20/10/2011).
