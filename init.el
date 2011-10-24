@@ -19,7 +19,7 @@
 
 ;; Setup external directory variable
 (setq elisp-dir
-      (expand-file-name "elisp" ".emacs.d"))
+      (expand-file-name "elisp" user-emacs-directory))
 (setq elisp-external-dir
       (expand-file-name "external" elisp-dir))
 
@@ -73,6 +73,10 @@
 
 ;; Set color
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
 ; Auto complete settings
@@ -83,6 +87,10 @@
 
 ; -------------------- Custom Settings --------------------
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.32")
  '(inhibit-startup-screen t)
  '(org-agenda-files (quote ("~/Dropbox/org")))
@@ -221,6 +229,7 @@
 (setq gist-authentication-function 'gist-basic-authentication)
 
 (setq the-secrets-file
-      (expand-file-name "secrets.el" ".emacs.d"))
+      (expand-file-name "secrets.el" user-emacs-directory))
 (when (file-exists-p the-secrets-file)
   (load the-secrets-file))
+
