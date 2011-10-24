@@ -215,4 +215,6 @@
 ;; Switch windows easier when you have 3 or more.
 (require 'switch-window)
 
-
+;; gist
+(setq secrets-file
+      (expand-file-name "secrets.el" ".emacs.d"))
