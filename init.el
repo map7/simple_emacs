@@ -2,6 +2,7 @@
 ; Author: Michael Pope
 ; Desc:   Emacs v24 config file made for development (mostly Ruby on Rails)
 ;; Ref: http://itstickers.blogspot.com/2010/11/all-about-emacs.html
+;; Ref: http://avdi.org/devblog/category/emacs-reboot/
 
 (require 'package)
 (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
@@ -16,8 +17,8 @@
     (package-install package)))
 
 ; directory to put various el files into
-(add-to-list 'load-path "~/.emacs.d/includes")
-(add-to-list 'load-path "~/.emacs.d/includes/emacs-rails")
+(add-to-list 'load-path "~/.emacs.d/elisp/external")
+(add-to-list 'load-path "~/.emacs.d/elisp/external/emacs-rails")
 
 ; Keybinding
 (global-set-key [f5] 'magit-status)
@@ -202,3 +203,6 @@
 
 ;; Switch windows easier when you have 3 or more.
 (require 'switch-window)
+
+;; gh (Github) 
+
