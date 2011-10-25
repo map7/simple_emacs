@@ -62,3 +62,8 @@ http://arunsark.wordpress.com/2011/03/24/back-to-emacs-for-ruby-on-rails/
 ** Package must reads
 
 Undo Tree - http://marmalade-repo.org/packages/undo-tree
+** Not included & why
+MuMaMo - it's buggy and hard to debug and haml-mode suits me fine.
+Ref: http://nex-3.com/posts/79-highlighting-ruby-in-haml-mode
+
+EGG - Magit is just as good now for managing git and it's included in Marmalade so it's easier to manage.
