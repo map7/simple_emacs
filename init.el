@@ -10,7 +10,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
+      (list 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'scss-mode 'haml-mode 'magit-simple-keys))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -129,8 +129,7 @@
 (require 'haml-mode nil 't)
  (add-hook 'haml-mode-hook
   '(lambda () (setq tab-width 2)))
-(require 'sass-mode nil 't)
-(add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
+(setq scss-compile-at-save nil)
 
 ; stylesheets
 (autoload 'css-mode "css-mode")
