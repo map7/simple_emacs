@@ -67,3 +67,5 @@ MuMaMo - it's buggy and hard to debug and haml-mode suits me fine.
 Ref: http://nex-3.com/posts/79-highlighting-ruby-in-haml-mode
 
 EGG - Magit is just as good now for managing git and it's included in Marmalade so it's easier to manage.
+** Other packages to consider
+   deft - simple note taking, but not as good as org-mode.
