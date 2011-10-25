@@ -10,7 +10,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
+      (list 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'feature-mode 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'yaml-mode 'sass-mode 'haml-mode 'magit-simple-keys))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
