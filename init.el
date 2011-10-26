@@ -243,3 +243,13 @@
 
 ;; mic-paren - advanced highlighting of matching parentheses
 (paren-activate)
+
+;; flyspell
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (flyspell-mode)
+	    (setq flyspell-issue-message-flag 'nil)))
+(add-hook 'ruby-mode-hook
+	  (lambda ()
+	    (flyspell-prog-mode)
+	    (setq flyspell-issue-message-flag 'nil)))
