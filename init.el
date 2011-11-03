@@ -116,6 +116,7 @@
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; https://github.com/remvee/emacs-rails
+;; Currently this interfers with auto complete, but I'll use it anyway.
 (require 'rails)			
 
 ;; Rinari
@@ -204,7 +205,7 @@
 ;; http://cx4a.org/software/rsense/
 ;; Follow instructions on: http://itstickers.blogspot.com/2010/11/all-about-emacs.html
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "!/.emacs.d/ac-dict")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 
 ;; Rsense
