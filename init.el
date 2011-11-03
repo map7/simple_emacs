@@ -105,7 +105,7 @@
 ; Intelligent file opener
 (ido-mode t)
 
-; tramp - remote ssh editin
+; tramp - remote ssh editing
 (setq tramp-default-method "ssh")
 
 ; -------------------- Rails setting files --------------------
@@ -127,7 +127,6 @@
           (lambda ()
             (defadvice ruby-mode-set-encoding
               (around ruby-mode-set-encoding-disable activate) nil)))
-
 
 ; -------------------- Rails Views -------------------- 
 ; haml-sass
@@ -268,3 +267,23 @@
 
 ;; multi-term
 ;; (setq term-default-fg-color "#aaa")	
+
+;; Upgrade all packages
+(defun package-update-all ()
+  "Update all packages"
+  (interactive)
+  (dolist (elt package-alist)
+    (let* ((name (car elt))
+           (file-name (symbol-name name))
+           (available-pkg (assq name package-archive-contents))
+           (available-version (and available-pkg
+                                   (package-desc-vers (cdr available-pkg))))
+           (current-version (package-desc-vers (cdr elt)))
+           )
+      (when (and available-version
+                 (version-list-< current-version available-version))
+        (message "Updating to: %s - %s" file-name
+                 (package-version-join available-version))
+        (package-install name)
+        (package-delete file-name (package-version-join current-version))))))
+
