@@ -293,3 +293,8 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/external/bongo")
 (autoload 'bongo "bongo"
   "Start Bongo by switching to a Bongo buffer." t)
+
+;; Volume manager (Use 'v' in bongo music player)
+(add-to-list 'load-path "~/.emacs.d/elisp/external/volume-el")
+(autoload 'volume "volume"
+   "Tweak your sound card volume." t)

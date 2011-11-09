@@ -7,3 +7,6 @@
 [submodule "elisp/external/bongo"]
 	path = elisp/external/bongo
 	url = https://github.com/dbrock/bongo.git
+[submodule "elisp/external/volume-el"]
+	path = elisp/external/volume-el
+	url = https://github.com/dbrock/volume-el.git
