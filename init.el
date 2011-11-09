@@ -288,3 +288,8 @@
         (package-install name)
         (package-delete file-name (package-version-join current-version))))))
 
+
+;; Music player
+(add-to-list 'load-path "~/.emacs.d/elisp/external/bongo")
+(autoload 'bongo "bongo"
+  "Start Bongo by switching to a Bongo buffer." t)

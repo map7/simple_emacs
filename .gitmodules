@@ -4,3 +4,6 @@
 [submodule "elisp/external/emacs-rails"]
 	path = elisp/external/emacs-rails
 	url = git://github.com/map7/emacs-rails.git
+[submodule "elisp/external/bongo"]
+	path = elisp/external/bongo
+	url = https://github.com/dbrock/bongo.git
