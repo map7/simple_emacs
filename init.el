@@ -72,7 +72,8 @@
 (global-set-key "\C-ca" 'org-agenda)
 (setq org-agenda-files '("~/Dropbox/org/"))
 (setq org-directory "~/Dropbox/org")
-(setq org-mobile-inbox-for-pull "~/Dropbox/org/inbox.org");; new notes will be stored here 
+(setq org-mobile-inbox-for-pull "~/Dropbox/org/inbox.org");; new notes will be stored here
+(setq org-support-shift-select t)
 (setq org-mobile-directory "~/Dropbox/MobileOrg")         ;; Set to <your Dropbox root directory>/MobileOrg.
 
 ;; Set color
