@@ -10,7 +10,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'rspec-mode 'apache-mode 'crontab-mode 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit-simple-keys))
+      (list 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit-simple-keys))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -96,9 +96,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+
  '(ecb-options-version "2.32")
  '(inhibit-startup-screen t)
- '(org-agenda-files (quote ("~/Dropbox/org")))
+ '(org-agenda-files (quote ("~/Dropbox/org")) t)
  '(rails-ws:default-server-type "mongrel")
  '(tooltip-mode nil))
 
@@ -291,6 +292,7 @@
 
 ;; Music player
 (add-to-list 'load-path "~/.emacs.d/elisp/external/bongo")
+(setq bongo-global-lastfm-mode t)
 (autoload 'bongo "bongo"
   "Start Bongo by switching to a Bongo buffer." t)
 
