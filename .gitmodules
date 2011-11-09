@@ -10,3 +10,6 @@
 [submodule "elisp/external/volume-el"]
 	path = elisp/external/volume-el
 	url = https://github.com/dbrock/volume-el.git
+[submodule "elisp/external/twittering-mode"]
+	path = elisp/external/twittering-mode
+	url = https://github.com/hayamiz/twittering-mode.git

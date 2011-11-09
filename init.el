@@ -10,7 +10,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'apache-mode 'crontab-mode 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit-simple-keys))
+      (list 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'apache-mode 'crontab-mode 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit-simple-keys))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -298,3 +298,14 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/external/volume-el")
 (autoload 'volume "volume"
    "Tweak your sound card volume." t)
+
+;; Twitter mode
+(add-to-list 'load-path "~/.emacs.d/elisp/external/twitter-mode")
+(require 'twittering-mode)
+(setq twittering-icon-mode t)  
+(setq twittering-timer-interval 300) 
+(setq twittering-url-show-status nil) 
+(add-hook 'twittering-edit-mode-hook (lambda () (ispell-minor-mode) (flyspell-mode)))
+
+;; drag-stuff
+(require 'drag-stuff)
