@@ -57,6 +57,7 @@
 (setq semanticdb-default-save-directory "/tmp")
 
 ; General settings
+(setq-default tab-width 4)
 (menu-bar-mode 1)         ;; enable the menu bar
 (tool-bar-mode -1)        ; Disable tool-bar
 (display-battery-mode)
@@ -311,3 +312,14 @@
 
 ;; drag-stuff
 (require 'drag-stuff)
+
+;; coffee-mode
+(defun coffee-custom ()
+  "coffee-mode-hook"
+ (set (make-local-variable 'tab-width) 2))
+
+(define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
+(define-key coffee-mode-map [(meta R)] 'coffee-compile-region)
+
+(add-hook 'coffee-mode-hook
+  '(lambda() (coffee-custom)))
