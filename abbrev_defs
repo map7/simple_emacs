@@ -39,9 +39,7 @@
 
 (define-abbrev-table 'grep-mode-abbrev-table '())
 
-(define-abbrev-table 'haml-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'haml-mode-abbrev-table '())
 
 (define-abbrev-table 'html-helper-mode-abbrev-table
   '(
@@ -983,7 +981,7 @@ end$>")) 0)
     ("elsif" "" (lambda nil (interactive) (snippet-insert "elsif $${condition}
 $>$.")) 0)
     ("end" "" (lambda nil (interactive) (snippet-insert "$>$.
-end$>")) 1)
+end$>")) 0)
     ("enum" "" (lambda nil (interactive) (snippet-insert "include Enumerable
 
 def each(&block)

@@ -64,7 +64,6 @@
 (setq column-number-mode t)
 (display-time)
 (setq backup-inhibited t) ;; disable backup
-(setq save-abbrevs t)
 
 ;; Org-mode options
 (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
@@ -318,8 +317,11 @@
   "coffee-mode-hook"
  (set (make-local-variable 'tab-width) 2))
 
-(define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
-(define-key coffee-mode-map [(meta R)] 'coffee-compile-region)
+;; (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
+;; (define-key coffee-mode-map [(meta R)] 'coffee-compile-region)
 
 (add-hook 'coffee-mode-hook
   '(lambda() (coffee-custom)))
+
+
+(setq save-abbrevs 'silently)
