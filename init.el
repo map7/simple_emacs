@@ -66,12 +66,11 @@
 (setq backup-inhibited t) ;; disable backup
 
 ;; Org-mode options
-(add-hook 'org-mode-hook
-		  'turn-on-visual-line-mode
-		  'auto-save-mode)
-(add-hook 'org-mode-hook '(lambda()
-							(setq auto-save-visited-file-name t)
-							(setq auto-save-interval 20)))
+(add-hook 'org-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'org-mode-hook 'my-org-mode-autosave-settings)
+(defun my-org-mode-autosave-settings ()
+  (set (make-local-variable 'auto-save-visited-file-name) t)
+  (setq auto-save-interval 20))
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
