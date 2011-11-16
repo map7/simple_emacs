@@ -19,6 +19,8 @@
 
 (define-abbrev-table 'change-log-mode-abbrev-table '())
 
+(define-abbrev-table 'chess-pgn-mode-abbrev-table '())
+
 (define-abbrev-table 'coffee-mode-abbrev-table '())
 
 (define-abbrev-table 'comint-mode-abbrev-table '())
@@ -1118,6 +1120,8 @@ end$>")) 0)
 (define-abbrev-table 'sql-mode-abbrev-table
   '(
    ))
+
+(define-abbrev-table 'tar-mode-abbrev-table '())
 
 (define-abbrev-table 'text-mode-abbrev-table '())
 

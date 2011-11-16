@@ -10,7 +10,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit-simple-keys))
+      (list 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit-simple-keys))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -69,8 +69,10 @@
 (add-hook 'org-mode-hook
 		  'turn-on-visual-line-mode
 		  'auto-save-mode)
-(setq auto-save-visited-file-name t)
-(setq auto-save-interval 20)
+(add-hook 'org-mode-hook '(lambda()
+							(setq auto-save-visited-file-name t)
+							(setq auto-save-interval 20)))
+
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
@@ -172,6 +174,7 @@
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.html.erb\\'" . html-mode))
 
 ;; ;; Ruby-electric
 (require 'ruby-electric)
@@ -330,3 +333,7 @@
 ;; Don't ask to save abbrevs
 (setq save-abbrevs 'silently)
 
+
+;; log commands.
+;; M-x mwe:open-command-log-buffer
+(add-hook 'LaTeX-mode-hook (function mwe:log-keyboard-commands))
