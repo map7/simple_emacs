@@ -67,10 +67,10 @@
 
 ;; Org-mode options
 (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
-(add-hook 'org-mode-hook 'my-org-mode-autosave-settings)
-(defun my-org-mode-autosave-settings ()
-  (set (make-local-variable 'auto-save-visited-file-name) t)
-  (setq auto-save-interval 20))
+;; (add-hook 'org-mode-hook 'my-org-mode-autosave-settings)
+;; (defun my-org-mode-autosave-settings ()
+;;   (set (make-local-variable 'auto-save-visited-file-name) t)
+;;   (setq auto-save-interval 20))
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
@@ -176,8 +176,8 @@
 (add-to-list 'auto-mode-alist '("\\.html.erb\\'" . html-mode))
 
 ;; ;; Ruby-electric
-(require 'ruby-electric)
-(add-hook 'ruby-mode-hook 'ruby-electric-mode)
+;; (require 'ruby-electric)
+;; (add-hook 'ruby-mode-hook 'ruby-electric-mode)
 
 ;; Issues under some compiles of emacs
 ;; (require 'ruby-electric)
