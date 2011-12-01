@@ -32,6 +32,7 @@
 
 
 ; Keybinding
+(global-set-key [f1] 'twit)
 (global-set-key [f2] 'gist-region-or-buffer)
 (global-set-key [f3] 'switch-window)
 (global-set-key [f4] 'magit-display-log)
@@ -45,6 +46,8 @@
 
 (global-set-key (kbd "C-x f") 'rinari-find-file-in-project)
 (global-set-key (kbd "C-x g") 'rinari-rgrep)
+
+(global-set-key (kbd "C-c I") 'irc)
 
 ;fullscreen mode
 (defun switch-full-screen ()
@@ -112,8 +115,8 @@
  '(tooltip-mode nil))
 
 ; -------------------- File plugins --------------------
-; Intelligent file opener
-(ido-mode t)
+; Interactively Do Things
+(ido-mode t)							
 
 ; tramp - remote ssh editing
 (setq tramp-default-method "ssh")
@@ -129,7 +132,7 @@
 ;; https://github.com/remvee/emacs-rails
 ;; Currently this interfers with auto complete, using rinari instead
 ;; automatically adds end to blocks.
-;;(require 'rails)			
+(require 'rails)			
 
 ;; Rinari - Rails plugin
 (add-to-list 'load-path "~/.emacs.d/rinari/")
@@ -180,9 +183,9 @@
 (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.html.erb\\'" . html-mode))
 
-;; ;; Ruby-electric
-;; (require 'ruby-electric)
-;; (add-hook 'ruby-mode-hook 'ruby-electric-mode)
+;; Ruby-electric
+(require 'ruby-electric)
+(add-hook 'ruby-mode-hook 'ruby-electric-mode)
 
 ;; Issues under some compiles of emacs
 ;; (require 'ruby-electric)
@@ -341,3 +344,6 @@
 ;; log commands.
 ;; M-x mwe:open-command-log-buffer
 (add-hook 'LaTeX-mode-hook (function mwe:log-keyboard-commands))
+
+;; screensaver
+(setq zone-when-idle t)
