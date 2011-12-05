@@ -41,9 +41,7 @@
 
 (define-abbrev-table 'grep-mode-abbrev-table '())
 
-(define-abbrev-table 'haml-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'haml-mode-abbrev-table '())
 
 (define-abbrev-table 'html-helper-mode-abbrev-table
   '(
@@ -985,7 +983,7 @@ end$>")) 0)
     ("elsif" "" (lambda nil (interactive) (snippet-insert "elsif $${condition}
 $>$.")) 0)
     ("end" "" (lambda nil (interactive) (snippet-insert "$>$.
-end$>")) 0)
+end$>")) 1)
     ("enum" "" (lambda nil (interactive) (snippet-insert "include Enumerable
 
 def each(&block)
@@ -1050,7 +1048,7 @@ end$>")) 0)
     ("par" "" (lambda nil (interactive) (snippet-insert "params[:$${id}]")) 0)
     ("patfh" "" (lambda nil (interactive) (snippet-insert "File.join(File.dirname(__FILE__), *%w[$${here}])")) 0)
     ("pn" "" (lambda nil (interactive) (snippet-insert "PStore.new($${file_name})")) 0)
-    ("r" "" (lambda nil (interactive) (snippet-insert "attr_reader :$${attr_names}")) 1)
+    ("r" "" (lambda nil (interactive) (snippet-insert "attr_reader :$${attr_names}")) 0)
     ("ran" "" (lambda nil (interactive) (snippet-insert "sort_by { rand }")) 0)
     ("rb" "" (lambda nil (interactive) (snippet-insert "#!/usr/bin/env ruby -w
 
