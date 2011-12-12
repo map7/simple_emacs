@@ -44,6 +44,10 @@ Get git submodules (within ~/.emacs.d)
 
 Start emacs and it should compile everything
 
+** Updating packages
+: package-refresh-contents
+: package-update-all
+
 ** Advanced auto-complete section using Rsense
 
 Rsense is a third party tool to help create popups in emacs for auto-complete.
