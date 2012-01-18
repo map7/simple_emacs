@@ -4,6 +4,7 @@
 ;; Ref: http://itstickers.blogspot.com/2010/11/all-about-emacs.html
 ;; Ref: http://avdi.org/devblog/category/emacs-reboot/
 
+
 (require 'package)
 (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
@@ -15,7 +16,6 @@
   (when (not (package-installed-p package))
     (package-refresh-contents)
     (package-install package)))
-
 
 ;; Setup external directory variable
 (setq elisp-dir
@@ -91,7 +91,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
 ; Auto complete settings
 (setq hippie-expand-try-functions-list
@@ -327,6 +327,7 @@
 (setq twittering-timer-interval 300) 
 (setq twittering-url-show-status nil) 
 (add-hook 'twittering-edit-mode-hook (lambda () (ispell-minor-mode) (flyspell-mode)))
+(setq twittering-use-master-password t) ;; Don't prompt for authorisation. 
 
 ;; drag-stuff
 (require 'drag-stuff)
@@ -352,3 +353,29 @@
 
 ;; screensaver
 (setq zone-when-idle t)
+
+
+;; IRC reconnect
+(eval-after-load 'rcirc
+  '(defun-rcirc-command reconnect (arg)
+     "Reconnect the server process."
+     (interactive "i")
+     (unless process
+       (error "There's no process for this target"))
+     (let* ((server (car (process-contact process)))
+	    (port (process-contact process :service))
+	    (nick (rcirc-nick process))
+	    channels query-buffers)
+       (dolist (buf (buffer-list))
+	 (with-current-buffer buf
+	   (when (eq process (rcirc-buffer-process))
+	     (remove-hook 'change-major-mode-hook
+			  'rcirc-change-major-mode-hook)
+	     (if (rcirc-channel-p rcirc-target)
+		 (setq channels (cons rcirc-target channels))
+	       (setq query-buffers (cons buf query-buffers))))))
+       (delete-process process)
+       (rcirc-connect server port nick
+		      rcirc-default-user-name
+		      rcirc-default-full-name
+		      channels))))

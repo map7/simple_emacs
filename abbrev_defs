@@ -983,7 +983,7 @@ end$>")) 0)
     ("elsif" "" (lambda nil (interactive) (snippet-insert "elsif $${condition}
 $>$.")) 0)
     ("end" "" (lambda nil (interactive) (snippet-insert "$>$.
-end$>")) 1)
+end$>")) 0)
     ("enum" "" (lambda nil (interactive) (snippet-insert "include Enumerable
 
 def each(&block)
@@ -1110,6 +1110,8 @@ end$>")) 0)
 (define-abbrev-table 'scss-mode-abbrev-table '())
 
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '())
+
+(define-abbrev-table 'sgml-mode-abbrev-table '())
 
 (define-abbrev-table 'sh-mode-abbrev-table '())
 
