@@ -30,6 +30,15 @@
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
+; General settings
+(setq-default tab-width 4)
+(menu-bar-mode 1)         ;; enable the menu bar
+(tool-bar-mode -1)        ; Disable tool-bar
+(display-battery-mode)
+(setq column-number-mode t)
+(display-time)
+(setq backup-inhibited t) ;; disable backup
+
 
 ; Keybinding
 (global-set-key [f1] 'twit)
@@ -60,17 +69,14 @@
 ; stop emacs from contaminating each directory with semantic.cache
 (setq semanticdb-default-save-directory "/tmp")
 
-; General settings
-(setq-default tab-width 4)
-(menu-bar-mode 1)         ;; enable the menu bar
-(tool-bar-mode -1)        ; Disable tool-bar
-(display-battery-mode)
-(setq column-number-mode t)
-(display-time)
-(setq backup-inhibited t) ;; disable backup
 
 ;; Org-mode options
 (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
+(setq org-clock-out-remove-zero-time-clocks t)
+;; Problem with this is I like to see the clock and how many hours I've spent on the last
+;; item. Maybe if we could show the last 5 before putting the history into the drawer.
+;; (setq org-clock-into-drawer "CLOCK")
+
 ;; (add-hook 'org-mode-hook 'my-org-mode-autosave-settings)
 ;; (defun my-org-mode-autosave-settings ()
 ;;   (set (make-local-variable 'auto-save-visited-file-name) t)
@@ -123,6 +129,7 @@
 (ido-mode t)							
 
 ; tramp - remote ssh editing
+(require 'tramp)
 (setq tramp-default-method "ssh")
 
 ; -------------------- Rails setting files --------------------
@@ -133,10 +140,10 @@
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
-;; https://github.com/remvee/emacs-rails
-;; Currently this interfers with auto complete, using rinari instead
-;; automatically adds end to blocks.
-(require 'rails)			
+;; ;; https://github.com/remvee/emacs-rails
+;; ;; Currently this interfers with auto complete, using rinari instead
+;; ;; automatically adds end to blocks.
+;; (require 'rails)			;; Remarked out due to incompatibility with autocomplete
 
 ;; Rinari - Rails plugin
 (add-to-list 'load-path "~/.emacs.d/rinari/")
@@ -162,13 +169,13 @@
   "run html2haml on current buffer"
   (interactive)
   (setf filename buffer-file-name)
-  (setf newfilename (concat (car (split-string filename "\\.")) ".haml"))
+  (setf newfilename (concat filename ".haml"))
   (save-buffer)
-  (shell-command (concat "html2haml " filename " > " newfilename))
+  (shell-command (concat
+    "html2haml " filename " > " newfilename))
   (kill-buffer (current-buffer))
   (delete-file filename)
   (find-file newfilename))
-
 ;; -------------------- Rails Testing -------------------- 
 ;; Cucumber
 (require 'feature-mode)
@@ -187,10 +194,13 @@
 (add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.html.erb\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.ejs\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.eco\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.hamlc\\'" . haml-mode))
 
-;; Ruby-electric
-(require 'ruby-electric)
-(add-hook 'ruby-mode-hook 'ruby-electric-mode)
+;; ;; Ruby-electric
+;; (require 'ruby-electric)
+;; (add-hook 'ruby-mode-hook 'ruby-electric-mode)
 
 ;; Issues under some compiles of emacs
 ;; (require 'ruby-electric)
@@ -240,10 +250,14 @@
             (add-to-list 'ac-sources 'ac-source-rsense-method)
             (add-to-list 'ac-sources 'ac-source-rsense-constant)))
 
+;; Complete by C-c .
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c .") 'rsense-complete)))
 
 ;; RVM in emacs
-(require 'rvm)
-(rvm-use-default) ;; use rvm’s default ruby for the current Emacs session
+;; (require 'rvm)
+;; (rvm-use-default) ;; use rvm’s default ruby for the current Emacs session
 
 ;; Switch windows easier when you have 3 or more.
 (require 'switch-window)
@@ -324,7 +338,7 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/external/twitter-mode")
 (require 'twittering-mode)
 (setq twittering-icon-mode t)  
-(setq twittering-timer-interval 300) 
+(setq twittering-timer-interval 40) 
 (setq twittering-url-show-status nil) 
 (add-hook 'twittering-edit-mode-hook (lambda () (ispell-minor-mode) (flyspell-mode)))
 (setq twittering-use-master-password t) ;; Don't prompt for authorisation. 
@@ -379,3 +393,6 @@
 		      rcirc-default-user-name
 		      rcirc-default-full-name
 		      channels))))
+
+;; Video editor
+;; (load "~/.emacs.d/elisp/external/gneve.el")
