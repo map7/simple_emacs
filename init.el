@@ -187,7 +187,8 @@
 
 ;; -------------------- Rails Tools -------------------- 
 ;; Check out abbrev-mode instead as it seems lighter.
-(require 'snippet)
+;; Doesn't exist:
+;; (require 'snippet)
 
 ;; -------------------- Ruby plugins -------------------- 
 (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
