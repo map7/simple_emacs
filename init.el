@@ -3,15 +3,20 @@
 ; Desc:   Emacs v24 config file made for development (mostly Ruby on Rails)
 ;; Ref: http://itstickers.blogspot.com/2010/11/all-about-emacs.html
 ;; Ref: http://avdi.org/devblog/category/emacs-reboot/
+;; This file is constantly tested with emacs-snapshot from the following repo:
+;; https://launchpad.net/~cassou/+archive/emacs
 
+
+;; packages not in marmalade
+;; 'ruby-electric 'rinari - These are also updated regularly so I've put them into gitmodules
 
 (require 'package)
-(add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
+;; (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'emms 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'ruby-electric 'rinari 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit-simple-keys))
+      (list 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -34,7 +39,7 @@
 (setq-default tab-width 4)
 (menu-bar-mode 1)         ;; enable the menu bar
 (tool-bar-mode -1)        ; Disable tool-bar
-(display-battery-mode)
+;; (display-battery-mode)
 (setq column-number-mode t)
 (display-time)
 (setq backup-inhibited t) ;; disable backup
@@ -140,10 +145,10 @@
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
-;; ;; https://github.com/remvee/emacs-rails
-;; ;; Currently this interfers with auto complete, using rinari instead
-;; ;; automatically adds end to blocks.
-;; (require 'rails)			;; Remarked out due to incompatibility with autocomplete
+;; https://github.com/remvee/emacs-rails
+;; Currently this interfers with auto complete, using rinari instead
+;; automatically adds end to blocks.
+(require 'rails)			;; Remarked out due to incompatibility with autocomplete
 
 ;; Rinari - Rails plugin
 (add-to-list 'load-path "~/.emacs.d/rinari/")
@@ -198,9 +203,9 @@
 (add-to-list 'auto-mode-alist '("\\.eco\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.hamlc\\'" . haml-mode))
 
-;; ;; Ruby-electric
-;; (require 'ruby-electric)
-;; (add-hook 'ruby-mode-hook 'ruby-electric-mode)
+;; Ruby-electric
+(require 'ruby-electric)
+(add-hook 'ruby-mode-hook 'ruby-electric-mode)
 
 ;; Issues under some compiles of emacs
 ;; (require 'ruby-electric)

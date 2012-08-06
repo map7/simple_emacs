@@ -1,9 +1,6 @@
 [submodule "elisp/external/gist.el"]
 	path = elisp/external/gist.el
 	url = https://github.com/mhayashi1120/gist.el.git
-[submodule "elisp/external/emacs-rails"]
-	path = elisp/external/emacs-rails
-	url = git://github.com/map7/emacs-rails.git
 [submodule "elisp/external/bongo"]
 	path = elisp/external/bongo
 	url = https://github.com/dbrock/bongo.git
@@ -13,3 +10,12 @@
 [submodule "elisp/external/twittering-mode"]
 	path = elisp/external/twittering-mode
 	url = https://github.com/hayamiz/twittering-mode.git
+[submodule "elisp/external/emacs-rails"]
+	path = elisp/external/emacs-rails
+	url = https://github.com/remvee/emacs-rails.git
+[submodule "elisp/external/rinari"]
+	path = elisp/external/rinari
+	url = https://github.com/eschulte/rinari.git
+[submodule "elisp/external/ruby-electric"]
+	path = elisp/external/ruby-electric
+	url = https://github.com/qoobaa/ruby-electric.git

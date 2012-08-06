@@ -1,0 +1,50 @@
+;; -*- emacs-lisp -*- <12/08/02 10:51:50 /home/map7/.emacs.d/tramp>
+;; Tramp connection history.  Don't change this file.
+;; You can delete it, forcing Tramp to reapply the checks.
+
+((["ssh" "bender" "10.1.1.101" nil]
+  ("uname" "Linux 3.0.0-13-generic")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/usr/sbin" "/usr/local/bin"))
+  ("remote-shell" "/bin/sh")
+  ("stat" "\\stat")
+  ("file-exists" "test -e")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 1000)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("~" "/home/bender")
+  ("ls" "/bin/ls --color=never")
+  ("ls-dired" t)
+  ("readlink" "\\readlink")
+  ("local-encoding" base64-encode-region)
+  ("local-decoding" base64-decode-region)
+  ("remote-encoding" "base64")
+  ("remote-decoding" "base64 -d -i")
+  ("inline-compress" "gzip")
+  ("inline-decompress" "gzip -d"))
+ (["ssh" nil "paistram.lan" nil]
+  ("uname" "FreeBSD 7.0-RELEASE-p6")
+  ("test" "test")
+  ("remote-path"
+   ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/bin"))
+  ("remote-shell" "/bin/sh")
+  ("stat" nil)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl5")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 1001)
+  ("~" "/home/map7")
+  ("readlink" nil)
+  ("local-encoding" base64-encode-region)
+  ("local-decoding" base64-decode-region)
+  ("remote-encoding" tramp-perl-encode-with-module)
+  ("remote-decoding" tramp-perl-decode-with-module)
+  ("file-exists" "test -e")
+  ("gid-string" "map7")
+  ("uid-integer" 1001))
+ (["ssh" nil "C" nil]
+  nil))
