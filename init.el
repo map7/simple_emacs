@@ -10,13 +10,16 @@
 ;; packages not in marmalade
 ;; 'ruby-electric 'rinari - These are also updated regularly so I've put them into gitmodules
 
+;; Have to get the latest haml-mode as 3.0.14 had bugs in the colouring.
+;; 'haml-mode
+
 (require 'package)
 ;; (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'haml-mode 'magit))
+      (list 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'magit))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -158,7 +161,7 @@
             (defadvice ruby-mode-set-encoding
               (around ruby-mode-set-encoding-disable activate) nil)))
 
-; -------------------- Rails Views -------------------- 
+;; ; -------------------- Rails Views -------------------- 
 ; haml-sass
 (require 'haml-mode nil 't)
  (add-hook 'haml-mode-hook

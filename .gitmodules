@@ -19,3 +19,6 @@
 [submodule "elisp/external/ruby-electric"]
 	path = elisp/external/ruby-electric
 	url = https://github.com/qoobaa/ruby-electric.git
+[submodule "elisp/external/haml-mode"]
+	path = elisp/external/haml-mode
+	url = https://github.com/dgutov/haml-mode.git
