@@ -174,7 +174,8 @@
 ;;            (org-mobile-push-with-delay 10)))
 ;;    )))
 
-(run-at-time "00:05" 86400 '(lambda () (org-mobile-push-with-delay 1))) ;; refreshes agenda file each day
+;; This runs directly after you start emacs, it takes too long.
+;; (run-at-time "00:05" 86400 '(lambda () (org-mobile-push-with-delay 1))) ;; refreshes agenda file each day
 
 ;; org publish options
 (require 'org-publish)
@@ -316,6 +317,7 @@
 (add-to-list 'auto-mode-alist '("\\.ejs\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.eco\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.hamlc\\'" . haml-mode))
+(add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
 
 ;; Ruby-electric
 (require 'ruby-electric)
