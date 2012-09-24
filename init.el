@@ -12,6 +12,8 @@
 
 ;; Have to get the latest haml-mode as 3.0.14 had bugs in the colouring.
 ;; 'haml-mode
+;; Have to use a special version of haml-mode from:
+;; https://github.com/dgutov/haml-mode 
 
 (require 'package)
 ;; (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
@@ -48,7 +50,7 @@
 (setq backup-inhibited t) ;; disable backup
 
 
-; Keybinding
+; Keybinding (Keyboard shortcuts)
 (global-set-key [f1] 'twit)
 (global-set-key [f2] 'gist-region-or-buffer)
 (global-set-key [f3] 'switch-window)
@@ -61,10 +63,37 @@
 (global-set-key [f10] 'undo-tree-visualize)
 (global-set-key [f12] 'switch-full-screen)
 
+
+;
+; Examples
+; http://ergoemacs.org/emacs/emacs_hyper_super_keys.html
+;
+; C-<f12> = Use control function keys 
+; s-h     = Use windows key (super), this example is super & h
+;
+
+; Create a little function to run publish mode in a shortcut
+(defun puborg ()
+  (interactive)
+  (org-publish-project "org")
+)
+
+(global-set-key (kbd "s-e") 'eval-buffer)
+(global-set-key (kbd "s-h") 'puborg)
+(global-set-key (kbd "s-u") 'org-mobile-push)
 (global-set-key (kbd "C-x f") 'rinari-find-file-in-project)
-(global-set-key (kbd "C-x g") 'rinari-rgrep)
+(global-set-key (kbd "s-g") 'rinari-rgrep)
 
 (global-set-key (kbd "C-c I") 'irc)
+
+;; Speed up common functions 
+(global-set-key (kbd "s-2") 'split-window-vertically)
+(global-set-key (kbd "s-3") 'split-window-horizontally)
+(global-set-key (kbd "s-i") 'org-clock-in)
+(global-set-key (kbd "s-o") 'org-clock-out)
+
+; Auto revert unless there is unsaved data
+(global-auto-revert-mode t)
 
 ;fullscreen mode
 (defun switch-full-screen ()
@@ -98,6 +127,87 @@
 (setq org-mobile-inbox-for-pull "~/Dropbox/org/inbox.org");; new notes will be stored here
 (setq org-support-shift-select t)
 (setq org-mobile-directory "~/Dropbox/MobileOrg")         ;; Set to <your Dropbox root directory>/MobileOrg.
+
+;; Put email links in org mode :) - currently broken :(
+;; (setq ffap-url-regexp (replace-regexp-in-string "mailto:" "thunderlink: \ \ \ \ | mailto:" ffap-url-regexp));; for ThunderLink
+
+;;  (defun browse-url-thunderlink (url & optional new-window)
+;;    (interactive (browse-url-interactive-arg "URL:"))
+;;    (if (string-match "^ thunderlink ://" url)
+;;        (progn
+;;          (start-process (concat "thunderbird" url) nil "thunderbird" "-thunderlink" url)
+;;          t)
+;;      nil)
+;;    )
+;; (unless (listp browse-url-browser-function) (setq browse-url-browser-function (list (cons "." browse-url-browser-function))))
+;; (add-to-list 'browse-url-browser-function' ("^ thunderlink:". browse-url-thunderlink))
+
+;; (add-hook 'org-load-hook
+;;             '(lambda ()
+;;                (add-to-list 'org-link-types "thunderlink")
+;;                (org-make-link-regexps)
+;;                (add-hook 'org-open-link-functions' browse-url-thunderlink)
+;;                ))
+
+
+;; mobile org options
+;; http://kenmankoff.com/2012/08/17/emacs-org-mode-and-mobileorg-auto-sync
+;;
+
+;; Automatically push changes
+(defvar org-mobile-push-timer nil
+  "Timer that `org-mobile-push-timer' used to reschedule itself, or nil.")
+
+(defun org-mobile-push-with-delay (secs) 
+  (when org-mobile-push-timer
+    (cancel-timer org-mobile-push-timer))
+  (setq org-mobile-push-timer
+        (run-with-idle-timer
+         (* 1 secs) nil 'org-mobile-push)))
+
+;; TODO - put this into the background somehow.
+;; (add-hook 'after-save-hook 
+;;  (lambda () 
+;;    (when (eq major-mode 'org-mode)
+;;      (dolist (file (org-mobile-files-alist))
+;;        (if (string= (expand-file-name (car file)) (buffer-file-name))
+;;            (org-mobile-push-with-delay 10)))
+;;    )))
+
+(run-at-time "00:05" 86400 '(lambda () (org-mobile-push-with-delay 1))) ;; refreshes agenda file each day
+
+;; org publish options
+(require 'org-publish)
+(setq org-publish-project-alist
+      '(
+		;; ... add all the components here (see below)...
+
+		;; All org files (notes)
+		("org-notes"
+		 :base-directory "~/org/"
+		 :base-extension "org"
+		 :publishing-directory "~/org_html/"
+		 :recursive t
+		 :publishing-function org-publish-org-to-html
+		 :headline-levels 4             ; Just the default for this project.
+		 :auto-preamble t
+		 )
+
+		;; Attachments
+		("org-static"
+		 :base-directory "~/org/"
+		 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+		 :publishing-directory "~/org_html/"
+		 :recursive t
+		 :publishing-function org-publish-attachment
+		 )
+		
+		;; Publish component
+		("org" :components ("org-notes" "org-static"))
+
+      ))
+
+
 
 ;; Set color
 (custom-set-faces
@@ -287,7 +397,7 @@
 ;; Turn on local highlighting for Dired (C-x d) 
 (add-hook 'dired-after-readin-hook #'highline-mode-on) 
 ;; Turn on local highlighting for list-buffers (C-x C-b) 
-(defadvice list-buffers (after highlight-line activate) (save-excursion (set-buffer "*Buffer List*") (highline-mode-on)))
+(defadvice list-buffers (after highlight-line activate) (with-current-buffer (set-buffer "*Buffer List*") (highline-mode-on)))
 
 ;; mic-paren - advanced highlighting of matching parentheses
 (paren-activate)
