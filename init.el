@@ -78,19 +78,26 @@
   (org-publish-project "org")
 )
 
+;; Using 's' for work computer and 'H' for notebook as there is a 
+;; difference in mapping the super key.
+(global-set-key (kbd "H-e") 'eval-buffer)
 (global-set-key (kbd "s-e") 'eval-buffer)
+(global-set-key (kbd "H-h") 'puborg)
 (global-set-key (kbd "s-h") 'puborg)
+(global-set-key (kbd "H-u") 'org-mobile-push)
 (global-set-key (kbd "s-u") 'org-mobile-push)
-(global-set-key (kbd "C-x f") 'rinari-find-file-in-project)
+(global-set-key (kbd "H-g") 'rinari-rgrep)
 (global-set-key (kbd "s-g") 'rinari-rgrep)
+(global-set-key (kbd "C-x f") 'rinari-find-file-in-project)
+
 
 (global-set-key (kbd "C-c I") 'irc)
 
 ;; Speed up common functions 
-(global-set-key (kbd "s-2") 'split-window-vertically)
-(global-set-key (kbd "s-3") 'split-window-horizontally)
-(global-set-key (kbd "s-i") 'org-clock-in)
-(global-set-key (kbd "s-o") 'org-clock-out)
+(global-set-key (kbd "H-2") 'split-window-vertically)
+(global-set-key (kbd "H-3") 'split-window-horizontally)
+(global-set-key (kbd "H-i") 'org-clock-in)
+(global-set-key (kbd "H-o") 'org-clock-out)
 
 ; Auto revert unless there is unsaved data
 (global-auto-revert-mode t)
@@ -197,7 +204,7 @@
 		;; Attachments
 		("org-static"
 		 :base-directory "~/org/"
-		 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+		 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|htaccess"
 		 :publishing-directory "~/org_html/"
 		 :recursive t
 		 :publishing-function org-publish-attachment
@@ -236,6 +243,7 @@
  '(ecb-options-version "2.32")
  '(inhibit-startup-screen t)
  '(org-agenda-files (quote ("~/Dropbox/org")) t)
+ '(org-archive-location "~/Dropbox/org/archive/%s_archive::")
  '(rails-ws:default-server-type "mongrel")
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.googlemail.com")
@@ -314,6 +322,7 @@
 (add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.html.erb\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.eco\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.hamlc\\'" . haml-mode))

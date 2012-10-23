@@ -15,7 +15,7 @@
 	url = https://github.com/remvee/emacs-rails.git
 [submodule "elisp/external/rinari"]
 	path = elisp/external/rinari
-	url = https://github.com/eschulte/rinari.git
+	url = https://github.com/map7/rinari.git
 [submodule "elisp/external/ruby-electric"]
 	path = elisp/external/ruby-electric
 	url = https://github.com/qoobaa/ruby-electric.git
