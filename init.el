@@ -526,3 +526,8 @@
 
 ;; Video editor
 ;; (load "~/.emacs.d/elisp/external/gneve.el")
+
+
+;; Google maps
+(require 'google-maps)
+(require 'org-location-google-maps)
