@@ -27,6 +27,9 @@
     (package-refresh-contents)
     (package-install package)))
 
+
+
+
 ;; Setup external directory variable
 (setq elisp-dir
       (expand-file-name "elisp" user-emacs-directory))
@@ -195,6 +198,7 @@
 		 :base-directory "~/org/"
 		 :base-extension "org"
 		 :publishing-directory "~/org_html/"
+		 :style "<link rel=\"stylesheet\" href=\"css/stylesheet.css\" type=\"text/css\" />"
 		 :recursive t
 		 :publishing-function org-publish-org-to-html
 		 :headline-levels 4             ; Just the default for this project.

@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <12/10/22 20:39:47 /home/map7/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <12/10/24 15:53:22 /home/map7/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -46,8 +46,6 @@
   ("file-exists" "test -e")
   ("gid-string" "map7")
   ("uid-integer" 1001))
- (["ssh" nil "ssh" nil nil]
-  nil)
  (["ssh" "map7" "bender" nil nil]
   ("uname" "Linux 3.2.0-30-generic")
   ("test" "test")
@@ -62,4 +60,21 @@
   ("perl-file-spec" t)
   ("perl-cwd-realpath" t)
   ("perl" "\\perl")
-  ("readlink" "\\readlink")))
+  ("readlink" "\\readlink"))
+ (["ssh" nil "192.168.200.4" nil nil]
+  ("uname" "Linux 2.6.32-44-generic")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("busybox" nil)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("readlink" "\\readlink")
+  ("stat" "\\stat")
+  ("file-exists" "test -e")
+  ("ls" "/bin/ls --color=never")
+  ("id" "/usr/bin/id")
+  ("uid-integer" 1000)
+  ("gid-integer" 1000)))
