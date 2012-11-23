@@ -230,37 +230,23 @@
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
 ; Auto complete settings / tab settings
-; Ref: http://emacsblog.org/2007/03/12/tab-completion-everywhere/
-(defun indent-or-expand (arg)
-  "Either indent according to mode, or expand the word preceding
-point."
-  (interactive "*P")
-  (if (and
-       (or (bobp) (= ?w (char-syntax (char-before))))
-       (or (eobp) (not (= ?w (char-syntax (char-after))))))
-      (dabbrev-expand arg)
-    (indent-according-to-mode)))
+(global-set-key [(tab)] 'smart-tab)
+(defun smart-tab ()
+  "This smart tab is minibuffer compliant: it acts as usual in
+    the minibuffer. Else, if mark is active, indents region. Else if
+    point is at the end of a symbol, expands it. Else indents the
+    current line."
+  (interactive)
+  (if (minibufferp)
+      (unless (minibuffer-complete)
+        (dabbrev-expand nil))
+    (if mark-active
+        (indent-region (region-beginning)
+                       (region-end))
+      (if (looking-at "\\_>")
+          (dabbrev-expand nil)
+        (indent-for-tab-command)))))
 
-;; Define my-tab-fix
-(defun my-tab-fix ()
-  (local-set-key [tab] 'indent-or-expand))
- 
-;; Hook tab completion to major modes
-(add-hook 'ruby-mode-hook       'my-tab-fix)
-(add-hook 'c-mode-hook          'my-tab-fix)
-(add-hook 'sh-mode-hook         'my-tab-fix)
-(add-hook 'emacs-lisp-mode-hook 'my-tab-fix)
-
-;; (setq make-hippie-expand-function
-;; 	  '(try-expand-dabbrev-visible
-;; 		try-expand-dabbrev
-;; 		try-expand-dabbrev-all-buffers))
-
-
-;; (global-set-key [f1] (make-hippie-expand-function
-;; 					  '(try-expand-dabbrev-visible
-;; 						try-expand-dabbrev
-;; 						try-expand-dabbrev-all-buffers) t))
 					  
 
 ; -------------------- Custom Settings --------------------
