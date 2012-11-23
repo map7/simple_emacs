@@ -54,7 +54,7 @@
 
 
 ; Keybinding (Keyboard shortcuts)
-(global-set-key [f1] 'twit)
+;; (global-set-key [f1] 'twit)
 (global-set-key [f2] 'gist-region-or-buffer)
 (global-set-key [f3] 'switch-window)
 (global-set-key [f4] 'magit-display-log)
@@ -229,11 +229,39 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
-; Auto complete settings
-(setq hippie-expand-try-functions-list
-      '(try-complete-abbrev
-    try-complete-file-name
-    try-expand-dabbrev))
+; Auto complete settings / tab settings
+; Ref: http://emacsblog.org/2007/03/12/tab-completion-everywhere/
+(defun indent-or-expand (arg)
+  "Either indent according to mode, or expand the word preceding
+point."
+  (interactive "*P")
+  (if (and
+       (or (bobp) (= ?w (char-syntax (char-before))))
+       (or (eobp) (not (= ?w (char-syntax (char-after))))))
+      (dabbrev-expand arg)
+    (indent-according-to-mode)))
+
+;; Define my-tab-fix
+(defun my-tab-fix ()
+  (local-set-key [tab] 'indent-or-expand))
+ 
+;; Hook tab completion to major modes
+(add-hook 'ruby-mode-hook       'my-tab-fix)
+(add-hook 'c-mode-hook          'my-tab-fix)
+(add-hook 'sh-mode-hook         'my-tab-fix)
+(add-hook 'emacs-lisp-mode-hook 'my-tab-fix)
+
+;; (setq make-hippie-expand-function
+;; 	  '(try-expand-dabbrev-visible
+;; 		try-expand-dabbrev
+;; 		try-expand-dabbrev-all-buffers))
+
+
+;; (global-set-key [f1] (make-hippie-expand-function
+;; 					  '(try-expand-dabbrev-visible
+;; 						try-expand-dabbrev
+;; 						try-expand-dabbrev-all-buffers) t))
+					  
 
 ; -------------------- Custom Settings --------------------
 (custom-set-variables
