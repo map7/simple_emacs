@@ -138,6 +138,14 @@
 (setq org-support-shift-select t)
 (setq org-mobile-directory "~/Dropbox/MobileOrg")         ;; Set to <your Dropbox root directory>/MobileOrg.
 
+
+;; Set more workflow states than TODO
+(setq org-todo-keywords
+	  '((sequence "TODO(t)" "|" "DONE(d)" "DELEGATED(>)" )
+		(sequence "GONNA(g)" "|" "DONE(d)" )))
+
+(setq org-support-shift-select t)
+
 ;; Put email links in org mode :) - currently broken :(
 ;; (setq ffap-url-regexp (replace-regexp-in-string "mailto:" "thunderlink: \ \ \ \ | mailto:" ffap-url-regexp));; for ThunderLink
 
