@@ -21,13 +21,15 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'magit))
+      (list 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'magit))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
     (package-install package)))
 
-
+;; Expand Region
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
 
 
 ;; Setup external directory variable
