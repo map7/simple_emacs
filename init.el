@@ -402,6 +402,11 @@
 ;; Doesn't exist:
 ;; (require 'snippet)
 
+;; yasnippet
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"            ;; personal snippet
+		))
+
 ;; -------------------- Ruby plugins -------------------- 
 (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
