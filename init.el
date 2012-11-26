@@ -264,7 +264,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(display-battery-mode t)
  '(display-time-mode t)
  '(ecb-options-version "2.32")
  '(inhibit-startup-screen t)
@@ -375,6 +374,7 @@
 ;;             (ruby-electric-mode t)))
 
 ;; Inferior Ruby Mode
+;; Run a ruby process in a buffer
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
 (autoload 'inf-ruby-keys "inf-ruby" "" t)
 (eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
