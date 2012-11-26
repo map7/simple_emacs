@@ -22,3 +22,6 @@
 [submodule "elisp/external/haml-mode"]
 	path = elisp/external/haml-mode
 	url = https://github.com/dgutov/haml-mode.git
+[submodule "elisp/external/mark-multiple"]
+	path = elisp/external/mark-multiple
+	url = https://github.com/magnars/mark-multiple.el.git
