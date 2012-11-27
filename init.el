@@ -239,7 +239,8 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
-; Auto complete settings / tab settings
+;; Auto complete settings / tab settings
+;; http://emacsblog.org/2007/03/12/tab-completion-everywhere/ <-- in the comments
 (global-set-key [(tab)] 'smart-tab)
 (defun smart-tab ()
   "This smart tab is minibuffer compliant: it acts as usual in
@@ -254,7 +255,12 @@
         (indent-region (region-beginning)
                        (region-end))
       (if (looking-at "\\_>")
-          (dabbrev-expand nil)
+		  (dabbrev-expand nil)
+		  ;; My Post
+		  ;; http://stackoverflow.com/questions/13576156/emacs-smart-tab-with-yasnippets
+		  ;;
+		  ;; (unless (yas/expand)
+		  ;; 	(dabbrev-expand nil))
         (indent-for-tab-command)))))
 
 					  
