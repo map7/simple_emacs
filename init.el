@@ -407,6 +407,10 @@
       '("~/.emacs.d/snippets"            ;; personal snippet
 		))
 
+(require 'yasnippet)
+(yas/initialize)
+(yas/load-directory "~/.emacs.d/snippets/yasnippets-rails")
+
 ;; -------------------- Ruby plugins -------------------- 
 (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
