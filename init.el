@@ -21,7 +21,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'magit))
+      (list 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'magit))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -106,7 +106,8 @@
 (global-set-key (kbd "H-g") 'rinari-rgrep)
 (global-set-key (kbd "s-g") 'rinari-rgrep)
 (global-set-key (kbd "C-x f") 'rinari-find-file-in-project)
-
+(global-set-key (kbd "H-RET") 'google-maps)
+(global-set-key (kbd "s-RET") 'google-maps)
 
 (global-set-key (kbd "C-c I") 'irc)
 
@@ -115,6 +116,30 @@
 (global-set-key (kbd "H-3") 'split-window-horizontally)
 (global-set-key (kbd "H-i") 'org-clock-in)
 (global-set-key (kbd "H-o") 'org-clock-out)
+
+;; Speed up finding files
+;; Function to create new functions that look for a specific pattern
+(defun ffip-create-pattern-file-finder (&rest patterns)
+  (lexical-let ((patterns patterns))
+    (lambda ()
+      (interactive)
+      (let ((ffip-patterns patterns))
+        (find-file-in-project)))))
+
+;; Find file in project, with specific patterns
+(global-unset-key (kbd "C-x C-o"))
+(global-set-key (kbd "C-x C-o ja")
+                (ffip-create-pattern-file-finder "*.java"))
+(global-set-key (kbd "C-x C-o js")
+                (ffip-create-pattern-file-finder "*.js"))
+(global-set-key (kbd "C-x C-o jp")
+                (ffip-create-pattern-file-finder "*.jsp"))
+(global-set-key (kbd "C-x C-o r")
+                (ffip-create-pattern-file-finder "*.rb"))
+(global-set-key (kbd "C-x C-o c")
+                (ffip-create-pattern-file-finder "*.coffee"))
+(global-set-key (kbd "C-x C-o s")
+                (ffip-create-pattern-file-finder "*.scss"))
 
 ; Auto revert unless there is unsaved data
 (global-auto-revert-mode t)
@@ -146,11 +171,11 @@
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
-(setq org-agenda-files '("~/Dropbox/org/"))
-(setq org-directory "~/Dropbox/org")
-(setq org-mobile-inbox-for-pull "~/Dropbox/org/inbox.org");; new notes will be stored here
+(setq org-agenda-files '("~/org/"))
+(setq org-directory "~/org")
+(setq org-mobile-inbox-for-pull "~/org/inbox.org");; new notes will be stored here
 (setq org-support-shift-select t)
-(setq org-mobile-directory "~/Dropbox/MobileOrg")         ;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/MobileOrg")         ;; Set to <your ownCloud root directory>/MobileOrg.
 
 
 ;; Set more workflow states than TODO
@@ -267,15 +292,10 @@
         (indent-region (region-beginning)
                        (region-end))
       (if (looking-at "\\_>")
-		  (dabbrev-expand nil)
-		  ;; My Post
-		  ;; http://stackoverflow.com/questions/13576156/emacs-smart-tab-with-yasnippets
-		  ;;
-		  ;; (unless (yas/expand)
-		  ;; 	(dabbrev-expand nil))
-        (indent-for-tab-command)))))
-
-					  
+		  (let ((yas/fallback-behavior nil))
+			(unless (yas/expand)
+			  (dabbrev-expand nil)))
+		(indent-for-tab-command)))))
 
 ; -------------------- Custom Settings --------------------
 (custom-set-variables
@@ -287,8 +307,9 @@
  '(display-time-mode t)
  '(ecb-options-version "2.32")
  '(inhibit-startup-screen t)
- '(org-agenda-files (quote ("~/Dropbox/org")) t)
- '(org-archive-location "~/Dropbox/org/archive/%s_archive::")
+ '(max-lisp-eval-depth 3000)
+ '(max-specpdl-size 3000)
+ '(org-archive-location "~/org/archive/%s_archive::")
  '(rails-ws:default-server-type "mongrel")
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.googlemail.com")
@@ -664,3 +685,45 @@
           (lambda ()
             (require 'rename-sgml-tag)
             (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
+
+;; ;; Move around windows easier
+;; (when (fboundp 'windmove-default-keybindings)
+;;       (windmove-default-keybindings))
+
+;; Make dired less verbose
+(require 'dired-details)
+(setq-default dired-details-hidden-string "--- ")
+(dired-details-install)
+
+;; Save point position between sessions
+(require 'saveplace)
+(setq-default save-place t)
+(setq save-place-file (expand-file-name ".places" user-emacs-directory))
+
+;; rotate windows
+(global-set-key (kbd "C-<tab>") 'rotate-windows)
+(defun rotate-windows ()
+  "Rotate your windows"
+  (interactive)
+  (cond ((not (> (count-windows)1))
+         (message "You can't rotate a single window!"))
+        (t
+         (setq i 1)
+         (setq numWindows (count-windows))
+         (while  (< i numWindows)
+           (let* (
+                  (w1 (elt (window-list) i))
+                  (w2 (elt (window-list) (+ (% i numWindows) 1)))
+
+                  (b1 (window-buffer w1))
+                  (b2 (window-buffer w2))
+
+                  (s1 (window-start w1))
+                  (s2 (window-start w2))
+                  )
+             (set-window-buffer w1  b2)
+             (set-window-buffer w2 b1)
+             (set-window-start w1 s2)
+             (set-window-start w2 s1)
+             (setq i (1+ i)))))))
+
