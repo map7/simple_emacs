@@ -729,3 +729,11 @@
 
 ;; jinja2 - used in ansible templates
 (require 'jinja2-mode)
+(add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
+
+
+;; emms (audio/video player)
+(add-to-list 'load-path "~/.emacs.d/elisp/external/emms/lisp")
+(require 'emms-setup)
+(emms-all)
+(emms-default-players)
