@@ -11,3 +11,7 @@ secrets.el
 session*
 thumbs
 abbrev_defs
+emms
+image-dired
+tramp
+.places
