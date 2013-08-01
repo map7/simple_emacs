@@ -21,7 +21,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'coffee-mode 'yaml-mode 'feature-mode 'scss-mode 'magit))
+      (list 'autopair 'angular-snippets 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-easy 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'coffee-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'flymake-coffee 'yaml-mode 'feature-mode 'scss-mode 'magit))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -41,7 +41,6 @@
 ;; Expand Region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
-
 
 ;; Setup external directory variable
 (setq elisp-dir
@@ -79,6 +78,9 @@
 (global-set-key [f10] 'undo-tree-visualize)
 (global-set-key [f12] 'switch-full-screen)
 
+
+;; autopair
+(require 'autopair)
 
 
 ;
@@ -310,6 +312,11 @@
  '(max-lisp-eval-depth 3000)
  '(max-specpdl-size 3000)
  '(org-archive-location "~/org/archive/%s_archive::")
+ '(org-stuck-projects
+   (quote
+	("hard"
+	 ("REDUNDANT" "DONE" "NEXT" "NEXTACTION")
+	 nil "")))
  '(rails-ws:default-server-type "mongrel")
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.googlemail.com")
@@ -449,6 +456,9 @@
 (require 'yasnippet)
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets/yasnippets-rails")
+
+;; AngularJS snippets
+(require 'angular-snippets)
 
 ;; -------------------- Ruby plugins -------------------- 
 (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
@@ -616,15 +626,17 @@
 (require 'drag-stuff)
 
 ;; coffee-mode
+(require 'coffee-mode)
 (defun coffee-custom ()
   "coffee-mode-hook"
- (set (make-local-variable 'tab-width) 2))
-
-;; (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
-;; (define-key coffee-mode-map [(meta R)] 'coffee-compile-region)
+  (set (make-local-variable 'tab-width) 2))
 
 (add-hook 'coffee-mode-hook
   '(lambda() (coffee-custom)))
+
+;; flymake-coffee
+(require 'flymake-coffee)
+(add-hook 'coffee-mode-hook 'flymake-coffee-load)
 
 ;; Don't ask to save abbrevs
 (setq save-abbrevs 'silently)
