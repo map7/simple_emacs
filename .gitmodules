@@ -7,9 +7,6 @@
 [submodule "elisp/external/emacs-rails"]
 	path = elisp/external/emacs-rails
 	url = https://github.com/remvee/emacs-rails.git
-[submodule "elisp/external/ruby-electric"]
-	path = elisp/external/ruby-electric
-	url = https://github.com/qoobaa/ruby-electric.git
 [submodule "snippets/yasnippets-rails"]
 	path = snippets/yasnippets-rails
 	url = https://github.com/eschulte/yasnippets-rails.git
