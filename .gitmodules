@@ -1,6 +1,3 @@
-[submodule "elisp/external/gist.el"]
-	path = elisp/external/gist.el
-	url = https://github.com/mhayashi1120/gist.el.git
 [submodule "elisp/external/bongo"]
 	path = elisp/external/bongo
 	url = https://github.com/dbrock/bongo.git
@@ -19,9 +16,6 @@
 [submodule "elisp/external/ruby-electric"]
 	path = elisp/external/ruby-electric
 	url = https://github.com/qoobaa/ruby-electric.git
-[submodule "elisp/external/haml-mode"]
-	path = elisp/external/haml-mode
-	url = https://github.com/dgutov/haml-mode.git
 [submodule "elisp/external/mark-multiple"]
 	path = elisp/external/mark-multiple
 	url = https://github.com/magnars/mark-multiple.el.git

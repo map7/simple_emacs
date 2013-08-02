@@ -21,7 +21,7 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 (setq required-packages
-      (list 'autopair 'angular-snippets 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-easy 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'coffee-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'flymake-coffee 'yaml-mode 'feature-mode 'scss-mode 'magit))
+      (list 'jinja2-mode 'haml-mode 'gist 'jump 'autopair 'angular-snippets 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-easy 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'coffee-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'flymake-coffee 'yaml-mode 'feature-mode 'scss-mode 'magit))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -744,8 +744,8 @@
 (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
 
 
-;; emms (audio/video player)
-(add-to-list 'load-path "~/.emacs.d/elisp/external/emms/lisp")
-(require 'emms-setup)
-(emms-all)
-(emms-default-players)
+;; ;; emms (audio/video player)
+;; (add-to-list 'load-path "~/.emacs.d/elisp/external/emms/lisp")
+;; (require 'emms-setup)
+;; (emms-all)
+;; (emms-default-players)
