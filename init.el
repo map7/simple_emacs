@@ -24,7 +24,7 @@
 
 (package-initialize)
 (setq required-packages
-      (list 'twittering-mode 'google-maps 'ruby-electric 'rinari 'mark-multiple 'jinja2-mode 'haml-mode 'gist 'jump 'autopair 'angular-snippets 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-easy 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'coffee-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'flymake-coffee 'yaml-mode 'feature-mode 'scss-mode 'magit))
+      (list 'color-theme-railscasts 'twittering-mode 'google-maps 'ruby-electric 'rinari 'mark-multiple 'jinja2-mode 'haml-mode 'gist 'jump 'autopair 'angular-snippets 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-easy 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'coffee-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'flymake-coffee 'yaml-mode 'feature-mode 'scss-mode 'magit))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -617,7 +617,6 @@
    "Tweak your sound card volume." t)
 
 ;; Twitter mode
-(add-to-list 'load-path "~/.emacs.d/elisp/external/twitter-mode")
 (require 'twittering-mode)
 (setq twittering-icon-mode t)  
 (setq twittering-timer-interval 40) 
@@ -678,14 +677,6 @@
 		      rcirc-default-full-name
 		      channels))))
 
-;; Video editor
-;; (load "~/.emacs.d/elisp/external/gneve.el")
-
-
-;; Google maps
-(require 'google-maps)
-(require 'org-location-google-maps)
-
 ;; mark-multiple
 (require 'inline-string-rectangle)
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)
@@ -745,10 +736,3 @@
 ;; jinja2 - used in ansible templates
 (require 'jinja2-mode)
 (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
-
-
-;; ;; emms (audio/video player)
-;; (add-to-list 'load-path "~/.emacs.d/elisp/external/emms/lisp")
-;; (require 'emms-setup)
-;; (emms-all)
-;; (emms-default-players)
