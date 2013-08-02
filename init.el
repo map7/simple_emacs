@@ -6,15 +6,6 @@
 ;; This file is constantly tested with emacs-snapshot from the following repo:
 ;; https://launchpad.net/~cassou/+archive/emacs
 
-
-;; packages not in marmalade
-;; 'ruby-electric 'rinari - These are also updated regularly so I've put them into gitmodules
-
-;; Have to get the latest haml-mode as 3.0.14 had bugs in the colouring.
-;; 'haml-mode
-;; Have to use a special version of haml-mode from:
-;; https://github.com/dgutov/haml-mode 
-
 (require 'package)
 (add-to-list 'package-archives
 			 '("melpa" . "http://melpa.milkbox.net/packages/"))
@@ -62,14 +53,14 @@
 (setq-default tab-width 4)
 (menu-bar-mode 1)         ;; enable the menu bar
 (tool-bar-mode -1)        ; Disable tool-bar
+
 ;; (display-battery-mode)
 (setq column-number-mode t)
 (display-time)
 (setq backup-inhibited t) ;; disable backup
 
-
 ; Keybinding (Keyboard shortcuts)
-;; (global-set-key [f1] 'twit)
+(global-set-key [f1] 'twit)
 (global-set-key [f2] 'gist-region-or-buffer)
 (global-set-key [f3] 'switch-window)
 (global-set-key [f4] 'magit-display-log)
@@ -81,10 +72,8 @@
 (global-set-key [f10] 'undo-tree-visualize)
 (global-set-key [f12] 'switch-full-screen)
 
-
 ;; autopair
 (require 'autopair)
-
 
 ;
 ; Examples
@@ -182,6 +171,9 @@
 (setq org-support-shift-select t)
 (setq org-mobile-directory "~/MobileOrg")         ;; Set to <your ownCloud root directory>/MobileOrg.
 
+;; set scroll to step by 1 instead of half a page.
+(setq scroll-step            1
+      scroll-conservatively  10000)
 
 ;; Set more workflow states than TODO
 (setq org-todo-keywords
