@@ -10,15 +10,9 @@
 [submodule "elisp/external/emacs-rails"]
 	path = elisp/external/emacs-rails
 	url = https://github.com/remvee/emacs-rails.git
-[submodule "elisp/external/rinari"]
-	path = elisp/external/rinari
-	url = https://github.com/map7/rinari.git
 [submodule "elisp/external/ruby-electric"]
 	path = elisp/external/ruby-electric
 	url = https://github.com/qoobaa/ruby-electric.git
-[submodule "elisp/external/mark-multiple"]
-	path = elisp/external/mark-multiple
-	url = https://github.com/magnars/mark-multiple.el.git
 [submodule "snippets/yasnippets-rails"]
 	path = snippets/yasnippets-rails
 	url = https://github.com/eschulte/yasnippets-rails.git

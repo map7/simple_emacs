@@ -16,12 +16,15 @@
 ;; https://github.com/dgutov/haml-mode 
 
 (require 'package)
-;; (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+			 '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
+
 (package-initialize)
 (setq required-packages
-      (list 'jinja2-mode 'haml-mode 'gist 'jump 'autopair 'angular-snippets 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-easy 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'coffee-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'flymake-coffee 'yaml-mode 'feature-mode 'scss-mode 'magit))
+      (list 'rinari 'mark-multiple 'jinja2-mode 'haml-mode 'gist 'jump 'autopair 'angular-snippets 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-easy 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'coffee-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'flymake-coffee 'yaml-mode 'feature-mode 'scss-mode 'magit))
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
