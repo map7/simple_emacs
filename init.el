@@ -15,7 +15,50 @@
 
 (package-initialize)
 (setq required-packages
-      (list 'color-theme-railscasts 'twittering-mode 'google-maps 'ruby-electric 'rinari 'mark-multiple 'jinja2-mode 'haml-mode 'gist 'jump 'autopair 'angular-snippets 'find-file-in-project 'dired-details 'ace-jump-mode 'expand-region 'mwe-log-commands 'drag-stuff 'flymake-easy 'flymake-ruby 'flymake-haml 'regex-tool 'mic-paren 'highline 'android-mode 'css-mode 'coffee-mode 'csv-mode 'apache-mode 'crontab-mode 'switch-window 'multi-term 'undo-tree 'rvm 'auto-complete 'yasnippet-bundle 'inf-ruby 'flymake-coffee 'yaml-mode 'feature-mode 'scss-mode 'magit))
+      (list 'circe 						; IRC client
+			'color-theme-railscasts
+			'twittering-mode			; Twitter client
+			'google-maps
+			'mark-multiple
+			'jinja2-mode
+			'gist
+			'jump
+			'autopair
+			'find-file-in-project
+			'dired-details
+			'ace-jump-mode
+			'expand-region
+			'mwe-log-commands
+			'drag-stuff
+			'regex-tool
+			'mic-paren
+			'highline
+			'android-mode
+			'css-mode
+			'haml-mode
+			'coffee-mode
+			'csv-mode
+			'apache-mode
+			'crontab-mode
+			'switch-window
+			'multi-term
+			'undo-tree
+			'rbenv						; Ruby Environment
+			'inf-ruby
+			'ruby-electric
+			'rinari						; Ruby on Rails
+			'auto-complete
+			'angular-snippets
+			'yasnippet-bundle
+			'flymake-easy
+			'flymake-ruby
+			'flymake-haml
+			'flymake-coffee
+			'yaml-mode
+			'feature-mode
+			'scss-mode
+			'magit))
+
 (dolist (package required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)
@@ -729,3 +772,25 @@
 ;; jinja2 - used in ansible templates
 (require 'jinja2-mode)
 (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
+
+;; Circe (IRC) configuration
+;; Put your configuration in a ~/.private.el file with permissions 0600
+(load-file "~/.private.el")
+(setq circe-network-options
+      `(("Freenode"
+         :nick ,freenode-user
+         :channels ("#mlug-au")
+         :nickserv-password ,freenode-password
+         )))
+
+;; Shortcut to connect to IRC
+(defun irc ()
+  "Connect to IRC"
+  (interactive)
+  (circe "Freenode"))
+
+;; Enable chanop commands
+(eval-after-load 'circe '(require 'circe-chanop))
+
+;; rbenv - Ruby environment
+(setq rbenv-installation-dir "/usr/local/rbenv") ; Global install
