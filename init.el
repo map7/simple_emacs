@@ -18,14 +18,14 @@
       (list 'circe 						; IRC client
 			'twittering-mode			; Twitter client
 			'color-theme-railscasts		; Theme
-			'google-maps			   
+			'google-maps			   	; Google maps in a buffer
+			'google-contacts			; Access your google contacts
 			'mark-multiple
-			'jinja2-mode
 			'gist						; Github paste code
 			'jump
 			'autopair
 			'find-file-in-project		; File searching
-			'dired-details
+			'dired-details				;
 			'ace-jump-mode
 			'expand-region
 			'mwe-log-commands
@@ -36,7 +36,10 @@
 			'mic-paren
 			'highline
 			'android-mode
+			'jinja2-mode
 			'css-mode
+			'csv-nav					; Edit CSV nicely.
+			'sass-mode					; SASS (better CSS)
 			'haml-mode
 			'coffee-mode
 			'csv-mode
@@ -46,10 +49,12 @@
 			'multi-term
 			'undo-tree					; Easy undo
 			'rbenv						; Ruby Environment
+			'ruby-mode					; Updated ruby mode
 			'inf-ruby					; Ruby interpreter
 			'ruby-electric				; Ruby complete 'end' etc.
 			'robe						; Ruby code nav, doc & completion
 			'rinari						; Ruby on Rails
+			'rspec-mode					; Rspec mode for Rails projects
 			'auto-complete
 			'angular-snippets
 			'yasnippet-bundle
@@ -57,10 +62,15 @@
 			'flymake-ruby
 			'flymake-haml
 			'flymake-coffee
+			'flymake-json
+			'flymake-yaml
+			'flymake-jslint				; Requires npm package 'jslint'
 			'yaml-mode
 			'feature-mode
 			'scss-mode
-			'magit))
+			'magit						; Git
+			'github-browse-file			; View file you are editing on github
+			))
 
 (dolist (package required-packages)
   (when (not (package-installed-p package))
@@ -104,6 +114,8 @@
 (setq column-number-mode t)
 (display-time)
 (setq backup-inhibited t) ;; disable backup
+
+
 
 ; Keybinding (Keyboard shortcuts)
 (global-set-key [f1] 'twit)
@@ -801,3 +813,4 @@
 
 ;; rbenv - Ruby environment
 (setq rbenv-installation-dir "/usr/local/rbenv") ; Global install
+
