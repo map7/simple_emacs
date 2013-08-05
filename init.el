@@ -631,6 +631,7 @@
 ;; flymake-coffee
 (require 'flymake-coffee)
 (add-hook 'coffee-mode-hook 'flymake-coffee-load)
+(setq flymake-coffee-coffeelint-configuration-file (expand-file-name "~/.emacs.d/coffeelint.json"))
 
 ;; Don't ask to save abbrevs
 (setq save-abbrevs 'silently)
