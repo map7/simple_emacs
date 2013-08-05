@@ -16,20 +16,22 @@
 (package-initialize)
 (setq required-packages
       (list 'circe 						; IRC client
-			'color-theme-railscasts
 			'twittering-mode			; Twitter client
-			'google-maps
+			'color-theme-railscasts		; Theme
+			'google-maps			   
 			'mark-multiple
 			'jinja2-mode
-			'gist
+			'gist						; Github paste code
 			'jump
 			'autopair
-			'find-file-in-project
+			'find-file-in-project		; File searching
 			'dired-details
 			'ace-jump-mode
 			'expand-region
 			'mwe-log-commands
 			'drag-stuff
+			'apt-utils
+			'ascii
 			'regex-tool
 			'mic-paren
 			'highline
@@ -42,10 +44,11 @@
 			'crontab-mode
 			'switch-window
 			'multi-term
-			'undo-tree
+			'undo-tree					; Easy undo
 			'rbenv						; Ruby Environment
-			'inf-ruby
-			'ruby-electric
+			'inf-ruby					; Ruby interpreter
+			'ruby-electric				; Ruby complete 'end' etc.
+			'robe						; Ruby code nav, doc & completion
 			'rinari						; Ruby on Rails
 			'auto-complete
 			'angular-snippets
@@ -477,6 +480,7 @@
   (kill-buffer (current-buffer))
   (delete-file filename)
   (find-file newfilename))
+
 ;; -------------------- Rails Testing -------------------- 
 ;; Cucumber
 (require 'feature-mode)
@@ -514,6 +518,9 @@
 (add-to-list 'auto-mode-alist '("\\.hamlc\\'" . haml-mode))
 (add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
 
+;; Robe
+;(add-hook 'ruby-mode-hook 'robe-mode)	
+
 ;; Ruby-electric
 (require 'ruby-electric)
 (add-hook 'ruby-mode-hook 'ruby-electric-mode)
@@ -538,7 +545,7 @@
 ;; Run a ruby process in a buffer
 (autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
 (autoload 'inf-ruby-keys "inf-ruby" "" t)
-(eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys))
+;; (eval-after-load 'ruby-mode '(add-hook 'ruby-mode-hook 'inf-ruby-keys)) ;; Error loading this.
 
 ;; -------------------- SQL --------------------
 (defun my-sql-interactive-mode-hook ()
