@@ -24,6 +24,7 @@
 			'gist						; Github paste code
 			'jump
 			'autopair
+			'hexrgb						; Color to hex
 			'find-file-in-project		; File searching
 			'dired-details				;
 			'ace-jump-mode
@@ -121,7 +122,7 @@
 (global-set-key [f1] 'twit)
 (global-set-key [f2] 'gist-region-or-buffer)
 (global-set-key [f3] 'switch-window)
-(global-set-key [f4] 'magit-display-log)
+(global-set-key [f4] 'magit-log)
 (global-set-key [f5] 'magit-status)
 (global-set-key [f6] 'multi-term)
 (global-set-key [f7] 'split-window-vertically)
