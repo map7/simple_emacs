@@ -399,7 +399,6 @@
 (require 'rails)			;; Remarked out due to incompatibility with autocomplete
 
 ;; Rinari - Rails plugin
-(add-to-list 'load-path "~/.emacs.d/rinari/")
 (require 'rinari)
 (add-hook 'ruby-mode-hook
           (lambda ()
