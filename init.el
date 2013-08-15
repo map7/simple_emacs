@@ -38,6 +38,7 @@
 			'highline
 			'android-mode
 			'jinja2-mode
+			'jade-mode	; template engine
 			'css-mode
 			'csv-nav					; Edit CSV nicely.
 			'sass-mode					; SASS (better CSS)
