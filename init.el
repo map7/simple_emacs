@@ -143,6 +143,9 @@
 ; s-h     = Use windows key (super), this example is super & h
 ;
 
+;; Allow divs in org-publish
+(require 'org-special-blocks)
+
 ; Create a little function to run publish mode in a shortcut
 (defun puborg ()
   (interactive)
@@ -522,7 +525,7 @@
 (add-to-list 'auto-mode-alist '("god" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode)) 
 (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.html.erb\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
@@ -530,6 +533,9 @@
 (add-to-list 'auto-mode-alist '("\\.eco\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.hamlc\\'" . haml-mode))
 (add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
+
+(add-hook 'ruby-mode-hook 'rinari-minor-mode)
+(add-hook 'haml-mode-hook 'rinari-minor-mode)
 
 ;; Robe
 ;(add-hook 'ruby-mode-hook 'robe-mode)	
