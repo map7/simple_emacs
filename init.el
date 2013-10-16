@@ -151,6 +151,9 @@
 ; s-h     = Use windows key (super), this example is super & h
 ;
 
+;; Allow divs in org-publish
+(require 'org-special-blocks)
+
 ; Create a little function to run publish mode in a shortcut
 (defun puborg ()
   (interactive)
@@ -225,6 +228,13 @@
 ;; item. Maybe if we could show the last 5 before putting the history into the drawer.
 ;; (setq org-clock-into-drawer "CLOCK")
 
+;; Display inline images
+(defun do-org-show-all-inline-images ()
+  (interactive)
+  (org-display-inline-images t t))
+(global-set-key (kbd "C-c C-x C v")
+                'do-org-show-all-inline-images)
+
 ;; (add-hook 'org-mode-hook 'my-org-mode-autosave-settings)
 ;; (defun my-org-mode-autosave-settings ()
 ;;   (set (make-local-variable 'auto-save-visited-file-name) t)
@@ -236,7 +246,6 @@
 (setq org-agenda-files '("~/org/"))
 (setq org-directory "~/org")
 (setq org-mobile-inbox-for-pull "~/org/inbox.org");; new notes will be stored here
-(setq org-support-shift-select t)
 (setq org-mobile-directory "~/MobileOrg")         ;; Set to <your ownCloud root directory>/MobileOrg.
 
 ;; set scroll to step by 1 instead of half a page.
@@ -248,7 +257,7 @@
 	  '((sequence "TODO(t)" "|" "DONE(d)" "DELEGATED(>)" "REDUNDANT(r)" )
 		(sequence "GONNA(g)" "|" "DONE(d)" )))
 
-(setq org-support-shift-select t)
+;; (setq org-support-shift-select t)		
 
 ;; Put email links in org mode :) - currently broken :(
 ;; (setq ffap-url-regexp (replace-regexp-in-string "mailto:" "thunderlink: \ \ \ \ | mailto:" ffap-url-regexp));; for ThunderLink
@@ -530,7 +539,7 @@
 (add-to-list 'auto-mode-alist '("god" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode)) 
 (add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.html.erb\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
@@ -538,6 +547,9 @@
 (add-to-list 'auto-mode-alist '("\\.eco\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.hamlc\\'" . haml-mode))
 (add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
+
+(add-hook 'ruby-mode-hook 'rinari-minor-mode)
+(add-hook 'haml-mode-hook 'rinari-minor-mode)
 
 ;; Robe
 ;(add-hook 'ruby-mode-hook 'robe-mode)	
@@ -634,6 +646,10 @@
 	    (flyspell-mode)
 	    (setq flyspell-issue-message-flag 'nil)))
 (add-hook 'ruby-mode-hook
+	  (lambda ()
+	    (flyspell-prog-mode)
+	    (setq flyspell-issue-message-flag 'nil)))
+(add-hook 'html-mode-hook
 	  (lambda ()
 	    (flyspell-prog-mode)
 	    (setq flyspell-issue-message-flag 'nil)))
