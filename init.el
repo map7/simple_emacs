@@ -16,6 +16,7 @@
 (package-initialize)
 (setq required-packages
       (list 'circe 						; IRC client
+			'dictionary					; A full dictionary for emacs
 			'twittering-mode			; Twitter client
 			'color-theme-railscasts		; Theme
 			'google-maps			   	; Google maps in a buffer
@@ -36,10 +37,12 @@
 			'regex-tool
 			'mic-paren
 			'highline
+			'go-mode					; go language major mode
 			'android-mode
 			'jinja2-mode
-			'jade-mode	; template engine
+			'jade-mode					; template engine
 			'css-mode
+			'less-css-mode
 			'csv-nav					; Edit CSV nicely.
 			'sass-mode					; SASS (better CSS)
 			'haml-mode
@@ -72,6 +75,7 @@
 			'scss-mode
 			'magit						; Git
 			'github-browse-file			; View file you are editing on github
+			'slime						; Superior Lisp Interaction Mode for Emacs [github]
 			))
 
 (dolist (package required-packages)
@@ -131,6 +135,10 @@
 ;; f9 is taken by git-status somewhere.
 (global-set-key [f10] 'undo-tree-visualize)
 (global-set-key [f12] 'switch-full-screen)
+
+;; key bindings for dictionary
+(global-set-key "\C-cs" 'dictionary-search)
+(global-set-key "\C-cm" 'dictionary-match-words)
 
 ;; autopair
 (require 'autopair)
@@ -832,3 +840,9 @@
 ;; rbenv - Ruby environment
 (setq rbenv-installation-dir "/usr/local/rbenv") ; Global install
 
+;; Slime (better lisp mode)
+(setq inferior-lisp-program "/usr/bin/sbcl")
+(require 'slime)
+(slime-setup)
+;; Use highlight colors
+(global-font-lock-mode t)
