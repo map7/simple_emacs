@@ -62,6 +62,7 @@
 			'rspec-mode					; Rspec mode for Rails projects
 			'auto-complete
 			'angular-snippets
+			'yasnippet
 			'yasnippet-bundle
 			'flymake-easy
 			'flymake-ruby
@@ -525,9 +526,8 @@
       '("~/.emacs.d/snippets"            ;; personal snippet
 		))
 
-(require 'yasnippet)
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/snippets/yasnippets-rails")
+;; No load-directory anymore
+;; (yas/load-directory "~/.emacs.d/snippets/yasnippets-rails")
 
 ;; AngularJS snippets
 (require 'angular-snippets)
