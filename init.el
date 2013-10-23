@@ -383,12 +383,9 @@
  '(inhibit-startup-screen t)
  '(max-lisp-eval-depth 3000)
  '(max-specpdl-size 3000)
+
  '(org-archive-location "~/org/archive/%s_archive::")
- '(org-stuck-projects
-   (quote
-	("hard"
-	 ("REDUNDANT" "DONE" "NEXT" "NEXTACTION")
-	 nil "")))
+ '(org-stuck-projects (quote ("hard" ("REDUNDANT" "DONE" "NEXT" "NEXTACTION") nil "")))
  '(rails-ws:default-server-type "mongrel")
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.googlemail.com")
