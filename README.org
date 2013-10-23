@@ -12,23 +12,24 @@ Once this issue is resolved I recommend removing tromey as it has a heap of old 
 
 ** Requirements
 
-Install Emacs 24 on Ubuntu link
-Ref: http://www.emacswiki.org/emacs/EmacsSnapshotAndDebian
+Install Emacs 24.3 (stable)
 
-Summary:
-: $ sudo aptitude install build-essential xorg-dev libgtk2.0-dev libgif-dev libtiff-dev libm17n-dev libpng12-dev librsvg2-dev libotf-dev texinfo libncurses-dev automake
-
-: $ git clone --depth 1 git://git.sv.gnu.org/emacs.git
-
-Then in the emacs dir. (~/emacs)
-: $ ./autogen.sh
-: $ ./configure
-: $ make -j8 bootstrap
-: $ sudo make install
+1. Download http://gnu.mirror.uber.com.au/emacs/emacs-24.3.tar.gz
+2. untar
+3. Install requirements
+   : $ sudo aptitude install build-essential xorg-dev libgtk2.0-dev libgif-dev libtiff-dev libm17n-dev libpng12-dev librsvg2-dev libotf-dev texinfo libncurses-dev automake
+4. Compile
+   : ./autogen.sh
+   : ./configure --prefix=/opt/emacs24
+   : make -j4
+5. Install
+   : sudo make install
 
 Now you can uninstall any emacs you have installed through symantic (ie: emacs-snapshot)
 
-I've tested this on ubuntu 10.04.3, but it should work on any Linux machine.
+I've tested this on ubuntu 10.04.3, Linux Mint 14 & Debian 7.1, but it should work on any Linux machine.
+
+Ref: http://www.plusastra.com/2012/11/installing-emacs-24-on-debian-wheezy.html
 
 ** Installation
 

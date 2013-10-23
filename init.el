@@ -258,7 +258,7 @@
 	  '((sequence "TODO(t)" "|" "DONE(d)" "DELEGATED(>)" "REDUNDANT(r)" )
 		(sequence "GONNA(g)" "|" "DONE(d)" )))
 
-;; (setq org-support-shift-select t)		
+(setq org-support-shift-select t)		
 
 ;; Put email links in org mode :) - currently broken :(
 ;; (setq ffap-url-regexp (replace-regexp-in-string "mailto:" "thunderlink: \ \ \ \ | mailto:" ffap-url-regexp));; for ThunderLink
@@ -384,12 +384,9 @@
  '(inhibit-startup-screen t)
  '(max-lisp-eval-depth 3000)
  '(max-specpdl-size 3000)
+
  '(org-archive-location "~/org/archive/%s_archive::")
- '(org-stuck-projects
-   (quote
-	("hard"
-	 ("REDUNDANT" "DONE" "NEXT" "NEXTACTION")
-	 nil "")))
+ '(org-stuck-projects (quote ("hard" ("REDUNDANT" "DONE" "NEXT" "NEXTACTION") nil "")))
  '(rails-ws:default-server-type "mongrel")
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.googlemail.com")
