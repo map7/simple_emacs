@@ -77,6 +77,8 @@
 			'magit						; Git
 			'github-browse-file			; View file you are editing on github
 			'slime						; Superior Lisp Interaction Mode for Emacs [github]
+			'free-keys					; Show what free-keys we have left.
+			'powerline
 			))
 
 (dolist (package required-packages)
@@ -247,7 +249,7 @@
 (setq org-agenda-files '("~/org/"))
 (setq org-directory "~/org")
 (setq org-mobile-inbox-for-pull "~/org/inbox.org");; new notes will be stored here
-(setq org-mobile-directory "~/MobileOrg")         ;; Set to <your ownCloud root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/MobileOrg")         ;; Set to <your ownCloud root directory>/MobileOrg.
 
 ;; set scroll to step by 1 instead of half a page.
 (setq scroll-step            1
@@ -843,3 +845,6 @@
 (slime-setup)
 ;; Use highlight colors
 (global-font-lock-mode t)
+
+;; Customise theme for mini console
+;;(powerline-center-theme)				
